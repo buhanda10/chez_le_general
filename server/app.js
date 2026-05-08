@@ -8,6 +8,7 @@ const vendeursRoutes = require('./routes/admin/vendeurs');
 const categoriesRoutes = require('./routes/admin/categories');
 const produitsRoutes = require('./routes/admin/produits');
 const taillesCouleursRoutes = require('./routes/admin/tailles_couleurs');
+const stockRoutes = require('./routes/admin/stock');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,6 +23,7 @@ app.use('/api/admin/vendeurs', vendeursRoutes);
 app.use('/api/admin/categories', categoriesRoutes);
 app.use('/api/admin/produits', produitsRoutes);
 app.use('/api/admin', taillesCouleursRoutes);
+app.use('/api/admin/stock', stockRoutes);
 
 // Redirection racine → login admin
 app.get('/', (req, res) => {

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion du stock</title>
+  <link rel="stylesheet" href="../../admin/css/dashboard.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header"><h2> Admin</h2></div>
+      <ul class="sidebar-menu">
+        <li><a href="../../admin/dashboard.html">Dashboard</a></li>
+        <li><a href="../../admin/vendeurs/index.html"> Vendeurs</a></li>
+        <li><a href="../../admin/produits/categories/index.html"> Catégories</a></li>
+        <li><a href="../../admin/produits/produits/index.html">Produits</a></li>
+        <li><a href="index.html" class="active">Stock</a></li>
+      </ul>
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1>Gestion du Stock</h1>
+      </header>
+      <main class="content">
+        <div class="toolbar">
+          <a href="entree.html" class="btn-link"> Entrée de stock</a>
+          <a href="ajustement.html" class="btn-link"> Ajustement</a>
+          <a href="historique.html" class="btn-link"> Historique</a>
+        </div>
+
+        <h2>Produits en alerte</h2>
+        <table id="tableAlertes">
+          <thead><tr><th>Produit</th><th>Réf</th><th>Taille</th><th>Couleur</th><th>Stock</th><th>Seuil</th><th>Action</th></tr></thead>
+          <tbody id="alertesBody"></tbody>
+        </table>
+
+        <h2 style="margin-top:2rem;">Tout le stock</h2>
+        <input type="text" id="searchInput" placeholder="Rechercher par nom ou référence...">
+        <select id="filtreAlerte">
+          <option value="">Tous</option>
+          <option value="faible">Sous seuil</option>
+          <option value="ok">Stock OK</option>
+        </select>
+        <table id="tableStock">
+          <thead><tr><th>Produit</th><th>Réf</th><th>Taille</th><th>Couleur</th><th>Stock</th><th>Seuil</th><th>Action</th></tr></thead>
+          <tbody id="stockBody"></tbody>
+        </table>
+      </main>
+    </div>
+  </div>
+  <script src="../../../shared/js/api.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>

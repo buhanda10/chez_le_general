@@ -84,3 +84,42 @@ CREATE TABLE mouvements_stock (
   utilisateur_id INTEGER REFERENCES utilisateurs(id),
   created_at TIMESTAMP DEFAULT now()
 );
+
+-- Clients (base commune admin/vendeurs)
+CREATE TABLE clients (
+  id SERIAL PRIMARY KEY,
+  nom VARCHAR(100),
+  prenom VARCHAR(100),
+  telephone VARCHAR(20) UNIQUE,
+  adresse TEXT,
+  created_at TIMESTAMP DEFAULT now()
+);
+
+-- Modes de paiement
+CREATE TABLE modes_paiement (
+  id SERIAL PRIMARY KEY,
+  libelle VARCHAR(50) NOT NULL UNIQUE
+);
+INSERT INTO modes_paiement (libelle) VALUES ('Espèces'), ('Mobile Money'), ('Carte bancaire'), ('Autre');
+
+-- Ventes
+CREATE TABLE ventes (
+  id SERIAL PRIMARY KEY,
+  reference_vente VARCHAR(30) UNIQUE NOT NULL,
+  vendeur_id INTEGER REFERENCES utilisateurs(id),
+  client_id INTEGER REFERENCES clients(id),
+  montant_total DECIMAL(10,2) NOT NULL,
+  remise DECIMAL(10,2) DEFAULT 0,
+  mode_paiement_id INTEGER REFERENCES modes_paiement(id),
+  created_at TIMESTAMP DEFAULT now()
+);
+
+-- Lignes de vente
+CREATE TABLE lignes_vente (
+  id SERIAL PRIMARY KEY,
+  vente_id INTEGER REFERENCES ventes(id) ON DELETE CASCADE,
+  variation_id INTEGER REFERENCES variations_produit(id),
+  produit_id INTEGER REFERENCES produits(id),
+  quantite INTEGER NOT NULL,
+  prix_unitaire DECIMAL(10,2) NOT NULL
+);

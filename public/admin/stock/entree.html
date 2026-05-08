@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Entrée de stock</title>
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <!-- même menu que stock/index -->
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1> Entrée de stock</h1>
+        <a href="index.html" class="btn-link">← Retour</a>
+      </header>
+      <main class="content">
+        <form id="formEntree">
+          <div class="input-group">
+            <label>Produit / Variation</label>
+            <select id="variation_id" required></select>
+          </div>
+          <div class="input-group">
+            <label>Quantité</label>
+            <input type="number" id="quantite" min="1" required>
+          </div>
+          <div class="input-group">
+            <label>Raison (optionnel)</label>
+            <input type="text" id="raison" placeholder="Ex: Achat fournisseur">
+          </div>
+          <button type="submit"> Enregistrer l'entrée</button>
+          <p id="message"></p>
+        </form>
+      </main>
+    </div>
+  </div>
+  <script src="../../../shared/js/api.js"></script>
+  <script src="js/entree.js"></script>
+</body>
+</html>

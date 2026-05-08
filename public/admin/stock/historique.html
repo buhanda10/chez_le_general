@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <title>Historique des mouvements</title>
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <!-- menu -->
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1>Historique</h1>
+        <a href="index.html" class="btn-link">← Retour</a>
+      </header>
+      <main class="content">
+        <div class="toolbar">
+          <select id="filtreType">
+            <option value="">Tous les types</option>
+            <option value="entree">Entrée</option>
+            <option value="sortie">Sortie</option>
+            <option value="ajustement">Ajustement</option>
+          </select>
+        </div>
+        <table id="tableHistorique">
+          <thead><tr><th>Date</th><th>Produit</th><th>Taille</th><th>Couleur</th><th>Type</th><th>Qté</th><th>Avant</th><th>Après</th><th>Raison</th><th>Par</th></tr></thead>
+          <tbody id="histBody"></tbody>
+        </table>
+        <div id="pagination"></div>
+      </main>
+    </div>
+  </div>
+  <script src="../../../shared/js/api.js"></script>
+  <script src="js/historique.js"></script>
+</body>
+</html>
