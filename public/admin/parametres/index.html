@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paramètres</title>
+  <link rel="stylesheet" href="../../admin/css/dashboard.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header"><h2>Admin</h2></div>
+      <ul class="sidebar-menu">
+        <li><a href="../../admin/dashboard.html"> Dashboard</a></li>
+        <li><a href="../../admin/vendeurs/index.html">Vendeurs</a></li>
+        <li><a href="../../admin/produits/categories/index.html"> Catégories</a></li>
+        <li><a href="../../admin/produits/produits/index.html"> Produits</a></li>
+        <li><a href="../../admin/stock/index.html">Stock</a></li>
+        <li><a href="../../admin/ventes/index.html"> Ventes</a></li>
+        <li><a href="../../admin/clients/index.html">Clients</a></li>
+        <li><a href="../../admin/rapports/index.html"> Rapports</a></li>
+        <li><a href="index.html" class="active">Paramètres</a></li>
+      </ul>
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1>Paramètres de la boutique</h1>
+      </header>
+      <main class="content">
+        <div class="form-container">
+          <form id="formParametres">
+            <div class="logo-section">
+              <img id="logoPreview" src="" alt="Logo" style="max-width:200px; max-height:100px;">
+              <input type="file" id="logoInput" accept="image/*">
+              <button type="button" id="btnUploadLogo">📤 Changer le logo</button>
+            </div>
+            <div class="input-group">
+              <label>Nom de la boutique</label>
+              <input type="text" id="nom_boutique" required>
+            </div>
+            <div class="input-group">
+              <label>Devise</label>
+              <input type="text" id="devise" placeholder="FCFA, €, $...">
+            </div>
+            <div class="input-group">
+              <label>Taux de TVA (%)</label>
+              <input type="number" step="0.01" id="taux_tva">
+            </div>
+            <div class="input-group">
+              <label>Téléphone</label>
+              <input type="text" id="telephone">
+            </div>
+            <div class="input-group">
+              <label>Adresse</label>
+              <textarea id="adresse" rows="3"></textarea>
+            </div>
+            <button type="submit">💾 Enregistrer</button>
+            <p id="message"></p>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../../../shared/js/api.js"></script>
+  <script src="js/parametres.js"></script>
+</body>
+</html>

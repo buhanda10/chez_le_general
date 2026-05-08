@@ -10,6 +10,8 @@ const produitsRoutes = require('./routes/admin/produits');
 const taillesCouleursRoutes = require('./routes/admin/tailles_couleurs');
 const stockRoutes = require('./routes/admin/stock');
 const ventesRoutes = require('./routes/admin/ventes');
+const rapportsRoutes = require('./routes/admin/rapports');
+const parametresRoutes = require('./routes/admin/parametres');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,7 +30,8 @@ app.use('/api/admin/stock', stockRoutes);
 app.use('/api/admin/ventes', ventesRoutes);
 app.use('/api/admin/clients', require('./routes/admin/clients'));
 app.use('/api/admin/modes-paiement', require('./routes/admin/modes_paiement'));
-
+app.use('/api/admin/rapports', rapportsRoutes);
+app.use('/api/admin/parametres', require('./routes/admin/parametres'));
 
 // Redirection racine → login admin
 app.get('/', (req, res) => {

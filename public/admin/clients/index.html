@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clients</title>
+  <link rel="stylesheet" href="../../admin/css/dashboard.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header"><h2>🛍️ Admin</h2></div>
+      <ul class="sidebar-menu">
+        <li><a href="../../admin/dashboard.html">📊 Dashboard</a></li>
+        <li><a href="../../admin/vendeurs/index.html">👥 Vendeurs</a></li>
+        <li><a href="../../admin/produits/categories/index.html">🏷️ Catégories</a></li>
+        <li><a href="../../admin/produits/produits/index.html">📦 Produits</a></li>
+        <li><a href="../../admin/stock/index.html">📦 Stock</a></li>
+        <li><a href="../../admin/ventes/index.html">💰 Ventes</a></li>
+        <li><a href="index.html" class="active">👤 Clients</a></li>
+      </ul>
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1>Gestion des Clients</h1>
+      </header>
+      <main class="content">
+        <div class="toolbar">
+          <a href="ajouter.html" class="btn-link">➕ Nouveau client</a>
+          <input type="text" id="searchInput" placeholder="Rechercher nom, prénom, tel...">
+          <button id="btnSearch" class="btn-link">🔍 Rechercher</button>
+        </div>
+        <table id="tableClients">
+          <thead><tr><th>ID</th><th>Nom</th><th>Prénom</th><th>Téléphone</th><th>Adresse</th><th>Actions</th></tr></thead>
+          <tbody id="clientsBody"><tr><td colspan="6">Chargement...</td></tr></tbody>
+        </table>
+      </main>
+    </div>
+  </div>
+  <script src="../../../shared/js/api.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>

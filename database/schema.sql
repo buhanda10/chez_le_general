@@ -125,3 +125,37 @@ CREATE TABLE lignes_vente (
 );
 
 ALTER TABLE clients ADD COLUMN IF NOT EXISTS actif BOOLEAN DEFAULT true;
+
+CREATE TABLE IF NOT EXISTS clients (
+  id SERIAL PRIMARY KEY,
+  nom VARCHAR(100),
+  prenom VARCHAR(100),
+  telephone VARCHAR(20) UNIQUE,
+  adresse TEXT,
+  actif BOOLEAN DEFAULT true,
+  created_at TIMESTAMP DEFAULT now()
+);
+
+
+CREATE TABLE IF NOT EXISTS parametres (
+  id SERIAL PRIMARY KEY,
+  nom_boutique VARCHAR(255) DEFAULT 'Ma Boutique',
+  devise VARCHAR(10) DEFAULT 'FCFA',
+  taux_tva DECIMAL(5,2) DEFAULT 0,
+  telephone VARCHAR(20),
+  adresse TEXT,
+  logo VARCHAR(255)
+);
+
+-- Insertion par défaut (ligne unique)
+INSERT INTO parametres (id, nom_boutique, devise, taux_tva)
+VALUES (1, 'chez le general', 'FC', 0)
+ON CONFLICT (id) DO NOTHING;
+
+CREATE TABLE logs_activite (
+  id SERIAL PRIMARY KEY,
+  utilisateur_id INTEGER REFERENCES utilisateurs(id),
+  action VARCHAR(100) NOT NULL,
+  details TEXT,
+  created_at TIMESTAMP DEFAULT now()
+);

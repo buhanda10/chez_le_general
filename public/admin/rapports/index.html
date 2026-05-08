@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapports & Analyses</title>
+  <link rel="stylesheet" href="../../admin/css/dashboard.css">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header"><h2>Admin</h2></div>
+      <ul class="sidebar-menu">
+        <li><a href="../../admin/dashboard.html"> Dashboard</a></li>
+        <li><a href="../../admin/vendeurs/index.html">Vendeurs</a></li>
+        <li><a href="../../admin/produits/categories/index.html"> Catégories</a></li>
+        <li><a href="../../admin/produits/produits/index.html">Produits</a></li>
+        <li><a href="../../admin/stock/index.html">Stock</a></li>
+        <li><a href="../../admin/ventes/index.html">Ventes</a></li>
+        <li><a href="../../admin/clients/index.html">Clients</a></li>
+        <li><a href="index.html" class="active">Rapports</a></li>
+      </ul>
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1>Rapports & Analyses</h1>
+      </header>
+      <main class="content">
+        <!-- Filtres -->
+        <div class="filtres">
+          <label>Du :</label>
+          <input type="date" id="date_debut">
+          <label>Au :</label>
+          <input type="date" id="date_fin">
+          <button id="btnAppliquer" class="btn-link">Appliquer</button>
+        </div>
+
+        <!-- KPI -->
+        <div class="kpi-container" id="kpiContainer"></div>
+
+        <!-- Graphiques -->
+        <div class="grid-2col">
+          <div class="card">
+            <h3>Ventes par jour</h3>
+            <canvas id="chartVentesJour" height="200"></canvas>
+          </div>
+          <div class="card">
+            <h3>Top Produits</h3>
+            <canvas id="chartTopProduits" height="200"></canvas>
+          </div>
+          <div class="card">
+            <h3>Performance Vendeurs</h3>
+            <canvas id="chartVendeurs" height="200"></canvas>
+          </div>
+          <div class="card">
+            <h3>Modes de paiement</h3>
+            <canvas id="chartPaiement" height="200"></canvas>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../../../shared/js/api.js"></script>
+  <script src="js/rapports.js"></script>
+</body>
+</html>
