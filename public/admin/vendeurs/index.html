@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion des Vendeurs</title>
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>👥 Vendeurs</h1>
+    <div class="user-info">
+      <a href="../dashboard.html">Dashboard</a>
+      <button id="logoutBtn">Déconnexion</button>
+    </div>
+  </header>
+  <main>
+    <div class="toolbar">
+      <button id="btnAjouter">Nouveau vendeur</button>
+    </div>
+    <table id="tableVendeurs">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom utilisateur</th>
+          <th>Nom complet</th>
+          <th>Téléphone</th>
+          <th>Statut</th>
+          <th>Dernière connexion</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="vendeursBody">
+        <tr><td colspan="7">Chargement...</td></tr>
+      </tbody>
+    </table>
+  </main>
+  <script src="../../shared/js/api.js"></script>
+  <script src="js/vendeurs.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      chargerVendeurs();
+      document.getElementById('btnAjouter').addEventListener('click', () => {
+        window.location.href = 'ajouter.html';
+      });
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.clear();
+        window.location.href = '../login.html';
+      });
+    });
+  </script>
+</body>
+</html>

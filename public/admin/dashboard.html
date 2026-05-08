@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <h2>Admin</h2>
+      </div>
+      <ul class="sidebar-menu">
+        <li><a href="dashboard.html" class="active"> Tableau de bord</a></li>
+        <li><a href="vendeurs/index.html"> Vendeurs</a></li>
+        <!-- les futures sections viendront ici -->
+      </ul>
+    </nav>
+
+    <!-- Contenu principal -->
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1>Tableau de bord</h1>
+        <div class="user-info">
+          <span id="userDisplay"></span>
+          <button id="logoutBtn">Déconnexion</button>
+        </div>
+      </header>
+      <main class="content">
+        <p>Bienvenue sur le tableau de bord administrateur. Utilisez le menu pour naviguer.</p>
+      </main>
+    </div>
+  </div>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

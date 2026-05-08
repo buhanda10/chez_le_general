@@ -1,0 +1,84 @@
+.toolbar {
+  margin-bottom: 1.5rem;
+}
+button, .btn-link {
+  background: #4a6cf7;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+button:hover, .btn-link:hover {
+  background: #3b5de7;
+}
+a {
+  color: #4a6cf7;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+th {
+  background: #1a1a2e;
+  color: white;
+  padding: 0.75rem;
+  text-align: left;
+}
+td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+tr:hover td {
+  background: #f8f9ff;
+}
+.badge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+.badge.actif {
+  background: #e6f9ed;
+  color: #2e7d32;
+}
+.badge.inactif {
+  background: #fdecea;
+  color: #b71c1c;
+}
+.form-container {
+  background: white;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.input-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+.input-group label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+.input-group input, .input-group select {
+  width: 100%;
+  padding: 0.55rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.message {
+  margin-top: 1rem;
+  font-weight: bold;
+}

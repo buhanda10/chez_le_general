@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajouter un Vendeur</title>
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Ajouter un vendeur</h1>
+    <div class="user-info">
+      <a href="index.html">← Retour à la liste</a>
+    </div>
+  </header>
+  <main>
+    <form id="formAjouter" class="form-container">
+      <div class="input-group">
+        <label>Nom d'utilisateur *</label>
+        <input type="text" id="nom_utilisateur" required>
+      </div>
+      <div class="input-group">
+        <label>Mot de passe *</label>
+        <input type="password" id="mot_de_passe" required>
+      </div>
+      <div class="input-group">
+        <label>Nom complet</label>
+        <input type="text" id="nom_complet">
+      </div>
+      <div class="input-group">
+        <label>Téléphone</label>
+        <input type="text" id="telephone">
+      </div>
+      <button type="submit"> Enregistrer</button>
+      <p id="message" class="message"></p>
+    </form>
+  </main>
+  <script src="../../shared/js/api.js"></script>
+  <script>
+    document.getElementById('formAjouter').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const data = {
+        nom_utilisateur: document.getElementById('nom_utilisateur').value.trim(),
+        mot_de_passe: document.getElementById('mot_de_passe').value.trim(),
+        nom_complet: document.getElementById('nom_complet').value.trim(),
+        telephone: document.getElementById('telephone').value.trim()
+      };
+      const messageEl = document.getElementById('message');
+      try {
+        const res = await apiFetch('/api/admin/vendeurs', {
+          method: 'POST',
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.message);
+        messageEl.style.color = 'green';
+        messageEl.textContent = 'Vendeur créé avec succès. Redirection...';
+        setTimeout(() => window.location.href = 'index.html', 1500);
+      } catch(err) {
+        messageEl.style.color = 'red';
+        messageEl.textContent = err.message;
+      }
+    });
+  </script>
+</body>
+</html>

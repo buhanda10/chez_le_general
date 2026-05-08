@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modifier un Vendeur</title>
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1> Modifier le vendeur</h1>
+    <div class="user-info">
+      <a href="index.html">← Retour à la liste</a>
+    </div>
+  </header>
+  <main>
+    <form id="formModifier" class="form-container">
+      <input type="hidden" id="vendeurId">
+      <div class="input-group">
+        <label>Nom d'utilisateur *</label>
+        <input type="text" id="nom_utilisateur" required>
+      </div>
+      <div class="input-group">
+        <label>Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+        <input type="password" id="mot_de_passe">
+      </div>
+      <div class="input-group">
+        <label>Nom complet</label>
+        <input type="text" id="nom_complet">
+      </div>
+      <div class="input-group">
+        <label>Téléphone</label>
+        <input type="text" id="telephone">
+      </div>
+      <div class="input-group">
+        <label>Statut</label>
+        <select id="actif">
+          <option value="true">Actif</option>
+          <option value="false">Inactif</option>
+        </select>
+      </div>
+      <button type="submit">Mettre à jour</button>
+      <p id="message" class="message"></p>
+    </form>
+  </main>
+  <script src="../../shared/js/api.js"></script>
+  <script>
+    // Récupère l'ID depuis l'URL (?id=..)
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (!id) window.location.href = 'index.html';
+
+    async function chargerVendeur() {
+      try {
+        const res = await apiFetch(`/api/admin/vendeurs/${id}`);
+        const v = await res.json();
+        if (!res.ok) throw new Error(v.message);
+        document.getElementById('vendeurId').value = v.id;
+        document.getElementById('nom_utilisateur').value = v.nom_utilisateur || '';
+        document.getElementById('nom_complet').value = v.nom_complet || '';
+        document.getElementById('telephone').value = v.telephone || '';
+        document.getElementById('actif').value = v.actif.toString();
+      } catch(err) {
+        alert(err.message);
+        window.location.href = 'index.html';
+      }
+    }
+    chargerVendeur();
+
+    document.getElementById('formModifier').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const data = {
+        nom_utilisateur: document.getElementById('nom_utilisateur').value.trim(),
+        mot_de_passe: document.getElementById('mot_de_passe').value.trim(),
+        nom_complet: document.getElementById('nom_complet').value.trim(),
+        telephone: document.getElementById('telephone').value.trim(),
+        actif: document.getElementById('actif').value === 'true'
+      };
+      const messageEl = document.getElementById('message');
+      try {
+        const res = await apiFetch(`/api/admin/vendeurs/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.message);
+        messageEl.style.color = 'green';
+        messageEl.textContent = 'Vendeur mis à jour.';
+      } catch(err) {
+        messageEl.style.color = 'red';
+        messageEl.textContent = err.message;
+      }
+    });
+  </script>
+</body>
+</html>
