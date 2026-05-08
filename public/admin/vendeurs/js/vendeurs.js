@@ -17,6 +17,7 @@ async function chargerVendeurs() {
         <td><span class="badge ${v.actif ? 'actif' : 'inactif'}">${v.actif ? 'Actif' : 'Inactif'}</span></td>
         <td>${v.derniere_connexion ? new Date(v.derniere_connexion).toLocaleString() : 'Jamais'}</td>
         <td>
+          <a href="details.html?id=${v.id}" class="btn-link">Details</a>
           <a href="modifier.html?id=${v.id}" class="btn-link">Modifier</a>
           <button onclick="desactiverVendeur(${v.id})" ${!v.actif ? 'disabled' : ''}>Désactiver</button>
         </td>

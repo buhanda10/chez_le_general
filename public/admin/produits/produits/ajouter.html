@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajouter un produit</title>
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../css/produits.css">
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header"><h2> Admin</h2></div>
+      <ul class="sidebar-menu">
+        <li><a href="../../dashboard.html">Dashboard</a></li>
+        <li><a href="../../vendeurs/index.html">Vendeurs</a></li>
+        <li><a href="../categories/index.html">Catégories</a></li>
+        <li><a href="index.html" class="active">Produits</a></li>
+      </ul>
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1>Ajouter un produit</h1>
+        <a href="index.html" class="btn-link" style="background:#999;">← Retour</a>
+      </header>
+      <main class="content">
+        <form id="formProduit" enctype="multipart/form-data">
+          <div style="display:flex; gap:2rem; flex-wrap:wrap;">
+            <div style="flex:1; min-width:300px;">
+              <div class="input-group">
+                <label>Référence *</label>
+                <input type="text" id="reference" required>
+              </div>
+              <div class="input-group">
+                <label>Nom *</label>
+                <input type="text" id="nom" required>
+              </div>
+              <div class="input-group">
+                <label>Catégorie</label>
+                <select id="categorie_id"><option value="">Aucune</option></select>
+              </div>
+              <div class="input-group">
+                <label>Prix de vente *</label>
+                <input type="number" step="0.01" id="prix_vente" required>
+              </div>
+              <div class="input-group">
+                <label>Prix d'achat</label>
+                <input type="number" step="0.01" id="prix_achat">
+              </div>
+              <div class="input-group">
+                <label>Description</label>
+                <textarea id="description" rows="3"></textarea>
+              </div>
+              <div class="input-group">
+                <label>Images (max 5)</label>
+                <input type="file" id="images" multiple accept="image/*">
+              </div>
+            </div>
+            <div style="flex:1; min-width:300px;">
+              <h3>Variations (stock par taille/couleur)</h3>
+              <div id="variationsContainer"></div>
+              <button type="button" id="btnAjouterVariation" class="btn-link" style="margin-top:0.5rem;">+ Ajouter une variation</button>
+            </div>
+          </div>
+          <button type="submit" style="margin-top:1.5rem;">Créer le produit</button>
+          <p id="message"></p>
+        </form>
+      </main>
+    </div>
+  </div>
+  <script src="../../../shared/js/api.js"></script>
+  <script src="js/ajouter.js"></script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détail Produit</title>
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../css/produits.css">
+  <style>
+    /* Styles spécifiques à la fiche */
+    .fiche-produit {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .fiche-header {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .images-produit {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      max-width: 300px;
+    }
+    .images-produit img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      position: relative;
+    }
+    .image-item {
+      position: relative;
+    }
+    .image-item .supprimer-image {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: rgba(255,0,0,0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      line-height: 1;
+    }
+    .form-detail .input-group {
+      margin-bottom: 1rem;
+    }
+    .form-detail label {
+      font-weight: bold;
+      display: inline-block;
+      width: 120px;
+    }
+    .form-detail input, .form-detail select, .form-detail textarea {
+      padding: 0.4rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 250px;
+    }
+    .variations-table {
+      width: 100%;
+      margin: 1rem 0;
+    }
+    .variations-table th {
+      background: #1a1a2e;
+      color: white;
+      padding: 0.5rem;
+    }
+    .variations-table td {
+      padding: 0.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    .actions-cell {
+      display: flex;
+      gap: 0.3rem;
+    }
+    @media print {
+      body { background: white; }
+      .sidebar, .topbar, .no-print, .ajout-variation-form, .upload-section {
+        display: none !important;
+      }
+      .layout { display: block; height: auto; }
+      .main-wrapper { display: block; margin: 0; padding: 0; height: auto; background: white; }
+      .content { padding: 0; }
+      .fiche-produit { box-shadow: none; border: 1px solid #ccc; }
+      input, select, textarea { border: none; background: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header"><h2> Admin</h2></div>
+      <ul class="sidebar-menu">
+        <li><a href="../../dashboard.html"> Dashboard</a></li>
+        <li><a href="../../vendeurs/index.html"> Vendeurs</a></li>
+        <li><a href="../categories/index.html">Catégories</a></li>
+        <li><a href="index.html" class="active"> Produits</a></li>
+      </ul>
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1>Fiche Produit</h1>
+        <div class="user-info">
+          <button id="btnImprimer" class="no-print">🖨️ Imprimer / PDF</button>
+          <a href="index.html" class="btn-link no-print" style="background:#999;">← Retour</a>
+        </div>
+      </header>
+      <main class="content" id="detailContent">
+        Chargement...
+      </main>
+    </div>
+  </div>
+  <script src="../../../shared/js/api.js"></script>
+  <script src="js/details.js"></script>
+</body>
+</html>

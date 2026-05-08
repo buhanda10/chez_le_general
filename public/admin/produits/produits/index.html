@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produits</title>
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../css/produits.css">
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header"><h2>Admin</h2></div>
+      <ul class="sidebar-menu">
+        <li><a href="../../dashboard.html">Dashboard</a></li>
+        <li><a href="../../vendeurs/index.html">Vendeurs</a></li>
+        <li><a href="../categories/index.html">Catégories</a></li>
+        <li><a href="index.html" class="active"> Produits</a></li>
+      </ul>
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1>Produits</h1>
+      </header>
+      <main class="content">
+        <a href="ajouter.html" class="btn-link"> Nouveau produit</a>
+        <table id="tableProduits">
+          <thead>
+            <tr><th>Réf</th><th>Image</th><th>Nom</th><th>Catégorie</th><th>Prix vente</th><th>Prix achat</th><th>Statut</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="prodBody"></tbody>
+        </table>
+      </main>
+    </div>
+  </div>
+  <script src="../../../shared/js/api.js"></script>
+  <script src="js/produits.js"></script>
+</body>
+</html>

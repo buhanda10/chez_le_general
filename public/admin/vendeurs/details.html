@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détail Vendeur</title>
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Styles pour l'impression */
+    @media print {
+      body {
+        background: white !important;
+      }
+      .sidebar, .topbar, .user-info, .upload-section, .no-print {
+        display: none !important;
+      }
+      .layout {
+        display: block !important;
+        height: auto !important;
+      }
+      .main-wrapper {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto !important;
+        background: white !important;
+      }
+      .content {
+        padding: 0 !important;
+      }
+      .fiche-detail {
+        box-shadow: none;
+        border: 1px solid #ccc;
+        max-width: 100% !important;
+      }
+      /* Pour les inputs, on retire les bordures et le fond pour un effet propre */
+      input, select {
+        border: none !important;
+        background: none !important;
+        padding: 0 !important;
+      }
+      .photo-profil {
+        max-width: 100px;
+      }
+    }
+    .error { color: red; }
+    .fiche-detail .input-group {
+      margin-bottom: 1rem;
+    }
+    .fiche-detail label {
+      font-weight: bold;
+      display: inline-block;
+      width: 150px;
+    }
+    .fiche-detail input {
+      padding: 0.4rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 250px;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header"><h2>🛍️ Admin</h2></div>
+      <ul class="sidebar-menu">
+        <li><a href="../dashboard.html">📊 Tableau de bord</a></li>
+        <li><a href="index.html" class="active">👥 Vendeurs</a></li>
+      </ul>
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1>Fiche Vendeur</h1>
+        <div class="user-info">
+          <button id="btnImprimer" class="no-print">🖨️ Imprimer / PDF</button>
+          <button id="btnRetour" class="no-print">← Retour</button>
+        </div>
+      </header>
+      <main class="content" id="detailContent">
+        Chargement...
+      </main>
+    </div>
+  </div>
+  <script src="../../shared/js/api.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (!id) window.location.href = 'index.html';
+
+    let vendeur = null;
+
+    async function chargerDetail() {
+      try {
+        const res = await apiFetch(`/api/admin/vendeurs/${id}`);
+        vendeur = await res.json();
+        if (!res.ok) throw new Error(vendeur.message);
+        afficherFiche(vendeur);
+      } catch(err) {
+        document.getElementById('detailContent').innerHTML = `<p class="error">${err.message}</p>`;
+      }
+    }
+
+    function afficherFiche(v) {
+      const photoHtml = v.photo
+        ? `<img src="${v.photo}" alt="Photo" class="photo-profil">`
+        : `<div class="photo-placeholder">Pas de photo</div>`;
+
+      const html = `
+        <div class="fiche-detail">
+          <div class="fiche-header">
+            ${photoHtml}
+            <h2>${v.nom_complet || 'Sans nom'}</h2>
+          </div>
+          <div class="form-detail">
+            <div class="input-group">
+              <label>Nom d'utilisateur :</label>
+              <span>${v.nom_utilisateur}</span>
+            </div>
+            <div class="input-group">
+              <label>Nom complet :</label>
+              <input type="text" id="nom_complet" value="${v.nom_complet || ''}">
+            </div>
+            <div class="input-group">
+              <label>Téléphone :</label>
+              <input type="text" id="telephone" value="${v.telephone || ''}">
+            </div>
+            <div class="input-group">
+              <label>Email :</label>
+              <input type="email" id="email" value="${v.email || ''}">
+            </div>
+            <div class="input-group">
+              <label>Adresse :</label>
+              <input type="text" id="adresse" value="${v.adresse || ''}">
+            </div>
+            <div class="input-group">
+              <label>Statut :</label>
+              <span class="badge ${v.actif ? 'actif' : 'inactif'}">${v.actif ? 'Actif' : 'Inactif'}</span>
+            </div>
+            <div class="input-group">
+              <label>Dernière connexion :</label>
+              <span>${v.derniere_connexion ? new Date(v.derniere_connexion).toLocaleString() : 'Jamais'}</span>
+            </div>
+            <div class="input-group">
+              <label>Créé le :</label>
+              <span>${new Date(v.created_at).toLocaleString()}</span>
+            </div>
+            <div class="button-group no-print">
+              <button id="btnSauvegarder">💾 Enregistrer les modifications</button>
+            </div>
+          </div>
+          <div class="upload-section no-print">
+            <label>Changer la photo :</label>
+            <input type="file" id="photoInput" accept="image/*">
+            <button id="btnUpload">📤 Uploader</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('detailContent').innerHTML = html;
+
+      document.getElementById('btnSauvegarder').addEventListener('click', sauvegarder);
+      document.getElementById('btnUpload').addEventListener('click', uploadPhoto);
+    }
+
+    async function sauvegarder() {
+      const nom_utilisateur = vendeur.nom_utilisateur; // non modifiable
+      const nom_complet = document.getElementById('nom_complet').value.trim();
+      const telephone = document.getElementById('telephone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const adresse = document.getElementById('adresse').value.trim();
+      // On conserve le statut actuel
+      const actif = vendeur.actif;
+
+      try {
+        const res = await apiFetch(`/api/admin/vendeurs/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            nom_utilisateur,
+            nom_complet,
+            telephone,
+            email,
+            adresse,
+            actif
+          })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message);
+        alert('✅ Modifications enregistrées');
+        // Mettre à jour l'objet local
+        vendeur = data;
+      } catch(err) {
+        alert('❌ ' + err.message);
+      }
+    }
+
+    async function uploadPhoto() {
+      const fileInput = document.getElementById('photoInput');
+      if (!fileInput.files[0]) return alert('Sélectionnez une image');
+      const formData = new FormData();
+      formData.append('photo', fileInput.files[0]);
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`/api/admin/vendeurs/${id}/photo`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message);
+        // Mettre à jour l'objet local et rafraîchir l'affichage
+        vendeur.photo = data.photo;
+        afficherFiche(vendeur);
+      } catch(err) {
+        alert(err.message);
+      }
+    }
+
+    document.getElementById('btnImprimer').addEventListener('click', () => window.print());
+    document.getElementById('btnRetour').addEventListener('click', () => window.location.href = 'index.html');
+
+    chargerDetail();
+  </script>
+</body>
+</html>

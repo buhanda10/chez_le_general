@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catégories</title>
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../css/produits.css"> <!-- css commun -->
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header"><h2> Admin</h2></div>
+      <ul class="sidebar-menu">
+        <li><a href="../../dashboard.html">Dashboard</a></li>
+        <li><a href="../../vendeurs/index.html">👥 Vendeurs</a></li>
+        <li><a href="index.html" class="active">🏷️ Catégories</a></li>
+        <li><a href="../produits/index.html">📦 Produits</a></li>
+      </ul>
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1>Gestion des Catégories</h1>
+      </header>
+      <main class="content">
+        <button id="btnAjouter">Nouvelle catégorie</button>
+        <table id="tableCategories">
+          <thead>
+            <tr><th>ID</th><th>Nom</th><th>Description</th><th>Statut</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="catBody"></tbody>
+        </table>
+        <!-- Modale pour ajout/modification -->
+        <div id="modalCategorie" class="modal" style="display:none;">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modalTitle">Ajouter une catégorie</h3>
+            <form id="formCategorie">
+              <input type="hidden" id="catId">
+              <div class="input-group"><label>Nom</label><input type="text" id="nom" required></div>
+              <div class="input-group"><label>Description</label><textarea id="description"></textarea></div>
+              <button type="submit">Enregistrer</button>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../../../shared/js/api.js"></script>
+  <script src="js/categories.js"></script>
+</body>
+</html>
