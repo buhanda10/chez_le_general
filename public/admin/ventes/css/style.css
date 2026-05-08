@@ -1,0 +1,28 @@
+.filtres {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.filtres input, .filtres select {
+  padding: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.pagination {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.3rem;
+}
+.pagination button {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.pagination button.active, .pagination button:disabled {
+  background: #4a6cf7;
+  color: white;
+  border-color: #4a6cf7;
+}

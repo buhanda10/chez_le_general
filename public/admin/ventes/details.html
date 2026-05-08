@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Détail Vente</title>
+  <link rel="stylesheet" href="../../admin/css/dashboard.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .detail-container { background: white; border-radius: 12px; padding: 2rem; max-width: 700px; margin: auto; }
+    .detail-row { display: flex; margin-bottom: 0.5rem; }
+    .detail-label { font-weight: bold; width: 150px; }
+    .lignes-table { width: 100%; margin-top: 1rem; }
+    .lignes-table th { background: #1a1a2e; color: white; padding: 0.5rem; }
+    .lignes-table td { padding: 0.5rem; border-bottom: 1px solid #eee; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header"><h2> Admin</h2></div>
+      <ul class="sidebar-menu">
+        <li><a href="../../admin/dashboard.html"> Dashboard</a></li>
+        <li><a href="../../admin/vendeurs/index.html"> Vendeurs</a></li>
+        <li><a href="../../admin/produits/categories/index.html"> Catégories</a></li>
+        <li><a href="../../admin/produits/produits/index.html">Produits</a></li>
+        <li><a href="../../admin/stock/index.html"> Stock</a></li>
+        <li><a href="index.html" class="active"> Ventes</a></li>
+      </ul>
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1>Détail Vente</h1>
+        <a href="index.html" class="btn-link">← Retour</a>
+      </header>
+      <main class="content" id="detailContent">
+        Chargement...
+      </main>
+    </div>
+  </div>
+  <script src="../../../shared/js/api.js"></script>
+  <script src="js/details.js"></script>
+</body>
+</html>

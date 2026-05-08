@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Historique Ventes</title>
+  <link rel="stylesheet" href="../../admin/css/dashboard.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header"><h2>Admin</h2></div>
+      <ul class="sidebar-menu">
+        <li><a href="../../admin/dashboard.html">Dashboard</a></li>
+        <li><a href="../../admin/vendeurs/index.html"> Vendeurs</a></li>
+        <li><a href="../../admin/produits/categories/index.html"> Catégories</a></li>
+        <li><a href="../../admin/produits/produits/index.html"> Produits</a></li>
+        <li><a href="../../admin/stock/index.html"> Stock</a></li>
+        <li><a href="index.html" class="active">Ventes</a></li>
+      </ul>
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1>Historique des Ventes</h1>
+        <div>
+          <button id="btnExport" class="btn-link">Exporter CSV</button>
+        </div>
+      </header>
+      <main class="content">
+        <div class="filtres">
+          <input type="date" id="date_debut" placeholder="Du">
+          <input type="date" id="date_fin" placeholder="Au">
+          <select id="vendeur_id"><option value="">Tous vendeurs</option></select>
+          <select id="client_id"><option value="">Tous clients</option></select>
+          <select id="mode_paiement_id"><option value="">Tous modes</option></select>
+          <input type="text" id="recherche" placeholder="Réf ou produit...">
+          <button id="btnFiltrer" class="btn-link">Filtrer</button>
+        </div>
+        <table id="tableVentes">
+          <thead>
+            <tr>
+              <th>Référence</th>
+              <th>Date</th>
+              <th>Total</th>
+              <th>Remise</th>
+              <th>Vendeur</th>
+              <th>Client</th>
+              <th>Paiement</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ventesBody"></tbody>
+        </table>
+        <div id="pagination" class="pagination"></div>
+      </main>
+    </div>
+  </div>
+  <script src="../../../shared/js/api.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>

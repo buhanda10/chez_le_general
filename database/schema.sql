@@ -123,3 +123,5 @@ CREATE TABLE lignes_vente (
   quantite INTEGER NOT NULL,
   prix_unitaire DECIMAL(10,2) NOT NULL
 );
+
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS actif BOOLEAN DEFAULT true;
