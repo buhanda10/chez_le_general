@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mes Clients</title>
+  <link rel="stylesheet" href="css/pos.css">
+  <style>
+    .content { padding: 1rem; max-width: 1000px; margin: auto; }
+    .toolbar { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    th { background: #1a1a2e; color: white; padding: 0.75rem; text-align: left; }
+    td { padding: 0.75rem; border-bottom: 1px solid #eee; }
+    .form-inline { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center; }
+    .form-inline input { padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="topbar">
+      <h1>👤 Mes Clients</h1>
+      <div class="user-info">
+        <a href="pos.html">🛒 Point de vente</a>
+        <a href="ventes.html">📋 Ventes</a>
+        <a href="profil.html">⚙️ Profil</a>
+        <button id="logoutBtn">Déconnexion</button>
+      </div>
+    </nav>
+    <main class="content">
+      <div class="form-inline">
+        <input type="text" id="clientNom" placeholder="Nom">
+        <input type="text" id="clientPrenom" placeholder="Prénom">
+        <input type="text" id="clientTelephone" placeholder="Téléphone *" required>
+        <button id="btnCreer">➕ Créer</button>
+        <span id="message" style="color:green;"></span>
+      </div>
+      <div class="toolbar">
+        <input type="text" id="searchInput" placeholder="Rechercher nom, prénom, tel...">
+        <button id="btnSearch">🔍</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Nom</th><th>Prénom</th><th>Téléphone</th></tr>
+        </thead>
+        <tbody id="clientsBody">
+          <tr><td colspan="4">Chargement...</td></tr>
+        </tbody>
+      </table>
+    </main>
+  </div>
+  <script src="../../shared/js/api.js"></script>
+  <script src="js/clients.js"></script>
+</body>
+</html>

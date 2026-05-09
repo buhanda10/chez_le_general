@@ -39,6 +39,7 @@ app.use('/api/vendeur/produits', require('./routes/vendeur/produits'));
 app.use('/api/vendeur/clients', require('./routes/vendeur/clients'));
 app.use('/api/vendeur/ventes', require('./routes/vendeur/ventes'));
 app.use('/api/vendeur/modes-paiement', require('./routes/vendeur/modes_paiement'));
+app.use('/api/vendeur/profil', require('./routes/vendeur/profil'));
 
 
 // Redirection racine → login admin

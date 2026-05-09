@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mes ventes</title>
+  <link rel="stylesheet" href="css/pos.css">
+  <style>
+    .content { padding: 1rem; max-width: 1000px; margin: auto; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    th { background: #1a1a2e; color: white; padding: 0.75rem; text-align: left; }
+    td { padding: 0.75rem; border-bottom: 1px solid #eee; }
+    tr:hover td { background: #f8f9ff; }
+    .pagination { margin-top: 1rem; }
+    .pagination button { margin: 0 0.2rem; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="topbar">
+      <h1>📋 Mes Ventes</h1>
+      <div class="user-info">
+        <a href="pos.html">🛒 Point de vente</a>
+        <a href="clients.html">👤 Clients</a>
+        <a href="profil.html">⚙️ Profil</a>
+        <button id="logoutBtn">Déconnexion</button>
+      </div>
+    </nav>
+    <main class="content">
+      <table>
+        <thead>
+          <tr>
+            <th>Référence</th>
+            <th>Date</th>
+            <th>Montant</th>
+            <th>Remise</th>
+            <th>Client</th>
+            <th>Paiement</th>
+          </tr>
+        </thead>
+        <tbody id="ventesBody">
+          <tr><td colspan="6">Chargement...</td></tr>
+        </tbody>
+      </table>
+      <div class="pagination" id="pagination"></div>
+    </main>
+  </div>
+  <script src="../../shared/js/api.js"></script>
+  <script src="js/ventes.js"></script>
+</body>
+</html>

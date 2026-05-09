@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mon Profil</title>
+  <link rel="stylesheet" href="css/pos.css">
+  <style>
+    .content { padding: 1rem; max-width: 500px; margin: auto; }
+    .form-group { margin-bottom: 1rem; }
+    label { display: block; margin-bottom: 0.25rem; font-weight: 500; }
+    input { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 6px; }
+    button { margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="topbar">
+      <h1>⚙️ Mon Profil</h1>
+      <div class="user-info">
+        <a href="pos.html">🛒 Point de vente</a>
+        <a href="ventes.html">📋 Ventes</a>
+        <a href="clients.html">👤 Clients</a>
+        <button id="logoutBtn">Déconnexion</button>
+      </div>
+    </nav>
+    <main class="content">
+      <h2>Modifier mes informations</h2>
+      <form id="profilForm">
+        <div class="form-group">
+          <label>Nom d'utilisateur (non modifiable)</label>
+          <input type="text" id="nom_utilisateur" disabled>
+        </div>
+        <div class="form-group">
+          <label>Nom complet</label>
+          <input type="text" id="nom_complet">
+        </div>
+        <div class="form-group">
+          <label>Téléphone</label>
+          <input type="text" id="telephone">
+        </div>
+        <hr>
+        <h3>Changer le mot de passe</h3>
+        <div class="form-group">
+          <label>Mot de passe actuel</label>
+          <input type="password" id="mdpActuel">
+        </div>
+        <div class="form-group">
+          <label>Nouveau mot de passe</label>
+          <input type="password" id="nouveauMdp">
+        </div>
+        <button type="submit">💾 Enregistrer</button>
+        <p id="message"></p>
+      </form>
+    </main>
+  </div>
+  <script src="../../shared/js/api.js"></script>
+  <script src="js/profil.js"></script>
+</body>
+</html>

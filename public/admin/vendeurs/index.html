@@ -9,10 +9,19 @@
 </head>
 <body>
   <header>
-    <h1>👥 Vendeurs</h1>
+    <h1> Vendeurs</h1>
     <div class="user-info">
-      <a href="../dashboard.html">Dashboard</a>
-      <button id="logoutBtn">Déconnexion</button>
+        <li><a href="../../admin/dashboard.html" class="active"> Dashboard</a></li>
+        <li><a href="../../admin/vendeurs/index.html">Vendeurs</a></li>
+        <li><a href="../../admin/produits/categories/index.html"> Catégories</a></li>
+        <li><a href="../../admin/produits/produits/index.html"> Produits</a></li>
+        <li><a href="../../admin/stock/index.html"> Stock</a></li>
+        <li><a href="../../admin/ventes/index.html"> Ventes</a></li>
+        <li><a href="../../admin/clients/index.html"> Clients</a></li>
+        <li><a href="../../admin/rapports/index.html"> Rapports</a></li>
+        <li><a href="../../admin/parametres/index.html"> Paramètres</a></li>
+        <li><a href="../../admin/logs/index.html"> Journaux</a></li>
+        <button id="logoutBtn">Déconnexion</button>
     </div>
   </header>
   <main>
@@ -46,7 +55,7 @@
       });
       document.getElementById('logoutBtn').addEventListener('click', () => {
         localStorage.clear();
-        window.location.href = '../login.html';
+        window.location.href = '../../index.html';
       });
     });
   </script>

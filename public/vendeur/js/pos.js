@@ -2,13 +2,17 @@
 const token = localStorage.getItem('token');
 const user = JSON.parse(localStorage.getItem('utilisateur'));
 if (!token || !user || user.role !== 'vendeur') {
-  window.location.href = '/index.html';
+  window.location.href = '../index.html';
 }
+const clientSel = document.getElementById('clientSelect');
+const modePaiementSel = document.getElementById('modePaiement');
+const panierContainer = document.getElementById('panierItems');
+const totalSpan = document.getElementById('totalPanier');
 
 document.getElementById('userDisplay').textContent = `👤 ${user.nom_complet || user.nom_utilisateur}`;
 document.getElementById('logoutBtn').addEventListener('click', () => {
   localStorage.clear();
-  window.location.href = '/index.html';
+  window.location.href = '../index.html';
 });
 
 // ========== VARIABLES GLOBALES ==========
