@@ -4,7 +4,7 @@ const pool = require('../../config/db');
 const { verifierToken, verifierRole } = require('../../middleware/auth');
 
 router.use(verifierToken);
-router.use(verifierRole('vendeur'));
+router.use(verifierRole('vendeur', 'admin'));
 
 // GET tous les clients actifs
 router.get('/', async (req, res) => {

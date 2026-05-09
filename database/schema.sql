@@ -159,3 +159,5 @@ CREATE TABLE logs_activite (
   details TEXT,
   created_at TIMESTAMP DEFAULT now()
 );
+
+ALTER TABLE modes_paiement ADD COLUMN IF NOT EXISTS actif BOOLEAN DEFAULT true;

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Modes de paiement</title>
+  <link rel="stylesheet" href="../../admin/css/dashboard.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header"><h2> Admin</h2></div>
+      <ul class="sidebar-menu">
+        <li><a href="../../admin/dashboard.html">Dashboard</a></li>
+        <li><a href="../../admin/vendeurs/index.html"> Vendeurs</a></li>
+        <li><a href="../../admin/produits/categories/index.html"> Catégories</a></li>
+        <li><a href="../../admin/produits/produits/index.html"> Produits</a></li>
+        <li><a href="../../admin/produits/tailles/index.html"> Tailles</a></li>
+        <li><a href="../../admin/produits/couleurs/index.html"> Couleurs</a></li>
+        <li><a href="index.html" class="active"> Paiement</a></li>
+        <li><a href="../../admin/stock/index.html"> Stock</a></li>
+        <li><a href="../../admin/ventes/index.html"> Ventes</a></li>
+        <li><a href="../../admin/clients/index.html"> Clients</a></li>
+        <li><a href="../../admin/rapports/index.html">Rapports</a></li>
+        <li><a href="../../admin/parametres/index.html"> Paramètres</a></li>
+        <li><a href="../../admin/logs/index.html">Journaux</a></li>
+      </ul>
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1> Gestion des modes de paiement</h1>
+      </header>
+      <main class="content">
+        <button id="btnAjouter"> Nouveau mode</button>
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Libellé</th><th>Statut</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="itemsBody"></tbody>
+        </table>
+        <!-- Modale -->
+        <div id="modalItem" class="modal" style="display:none;">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modalTitle">Ajouter un mode de paiement</h3>
+            <form id="formItem">
+              <input type="hidden" id="itemId">
+              <div class="input-group">
+                <label>Libellé</label>
+                <input type="text" id="libelle" required>
+              </div>
+              <div class="input-group" id="groupeStatut" style="display:none;">
+                <label>Statut</label>
+                <select id="actif">
+                  <option value="true">Actif</option>
+                  <option value="false">Inactif</option>
+                </select>
+              </div>
+              <button type="submit"> Enregistrer</button>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../../../shared/js/api.js"></script>
+  <script src="js/modes-paiement.js"></script>
+</body>
+</html>

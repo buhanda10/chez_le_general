@@ -5,7 +5,7 @@ const { verifierToken, verifierRole } = require('../../middleware/auth');
 const logAction = require('../../utils/logger');
 
 router.use(verifierToken);
-router.use(verifierRole('vendeur'));
+router.use(verifierRole('vendeur', 'admin'));
 
 // POST /api/vendeur/ventes - Créer une vente
 router.post('/', async (req, res) => {

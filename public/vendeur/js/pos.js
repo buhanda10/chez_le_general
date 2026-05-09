@@ -1,7 +1,7 @@
 // Vérification session
 const token = localStorage.getItem('token');
 const user = JSON.parse(localStorage.getItem('utilisateur'));
-if (!token || !user || user.role !== 'vendeur') {
+if (!token || !user || user.role !== 'vendeur' && user.role !== 'admin') {
   window.location.href = '../index.html';
 }
 

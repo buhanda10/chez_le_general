@@ -19,9 +19,9 @@ function verifierToken(req, res, next) {
 }
 
 // Vérifie que le rôle est bien celui attendu (ex: 'admin')
-function verifierRole(role) {
+function verifierRole(...roles) {
   return (req, res, next) => {
-    if (req.utilisateur.role !== role) {
+    if (!roles.includes(req.utilisateur.role)) {
       return res.status(403).json({ message: 'Droits insuffisants.' });
     }
     next();

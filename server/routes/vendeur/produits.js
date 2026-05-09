@@ -4,7 +4,7 @@ const pool = require('../../config/db');
 const { verifierToken, verifierRole } = require('../../middleware/auth');
 
 router.use(verifierToken);
-router.use(verifierRole('vendeur'));
+router.use(verifierRole('vendeur', 'admin'));
 
 // GET /api/vendeur/produits - liste produits actifs avec variations et image
 router.get('/', async (req, res) => {

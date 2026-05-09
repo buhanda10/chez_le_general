@@ -1,6 +1,6 @@
 const token = localStorage.getItem('token');
 const user = JSON.parse(localStorage.getItem('utilisateur'));
-if (!token || !user || user.role !== 'vendeur') window.location.href = '../index.html';
+if (!token || !user || user.role !== 'vendeur' && user.role !== 'admin') window.location.href = '../index.html';
 
 document.getElementById('logoutBtn').addEventListener('click', () => {
   localStorage.clear();
