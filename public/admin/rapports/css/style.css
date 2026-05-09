@@ -44,3 +44,65 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 .card h3 { margin-bottom: 1rem; color: #1a1a2e; }
+
+/* === Styles d'impression === */
+@media print {
+  /* Masquer les éléments non pertinents */
+  .sidebar, .topbar .actions, .no-print, .filtres {
+    display: none !important;
+  }
+
+  /* Réinitialiser la structure flex pour l'impression */
+  .layout {
+    display: block !important;
+    height: auto !important;
+  }
+  .main-wrapper {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    background: white !important;
+  }
+  .content {
+    padding: 0 !important;
+  }
+
+  /* KPI en ligne */
+  .kpi-container {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .kpi-box {
+    box-shadow: none !important;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+  }
+
+  /* Grille en deux colonnes sur la largeur de la page */
+  .grid-2col {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1rem;
+    page-break-inside: avoid;
+  }
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    page-break-inside: avoid;
+  }
+
+  /* Assurer que les canvas s'impriment en taille réduite raisonnable */
+  canvas {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}

@@ -4,6 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const pool = require('../../config/db');
 const { verifierToken, verifierRole } = require('../../middleware/auth');
+const { logAction } = require('../../utils/logger');
 
 router.use(verifierToken);
 router.use(verifierRole('admin'));
@@ -134,6 +135,7 @@ router.post('/', upload.array('images', 5), async (req, res) => {
   } finally {
     client.release();
   }
+    logAction(req.utilisateur.id, 'Création produit', `Le produit ${nom} a été créé.`);
 });
 
 // PUT modifier un produit (simplifié : on ne refait pas les variations ici, mais on peut les gérer séparément)
@@ -178,6 +180,7 @@ router.put('/:id', upload.array('images', 5), async (req, res) => {
   } finally {
     client.release();
   }
+    logAction(req.utilisateur.id, 'Modification produit', `Le produit d'ID ${id} a été modifié.`);
 });
 
 // DELETE (désactiver)
@@ -189,6 +192,7 @@ router.delete('/:id', async (req, res) => {
     console.error(err);
     res.status(500).json({ message: 'Erreur serveur.' });
   }
+  logAction(req.utilisateur.id, 'Désactivation produit', `Le produit d'ID ${req.params.id} a été désactivé.`);
 });
 
 // Gestion des variations : route séparée pour ajouter/modifier/supprimer

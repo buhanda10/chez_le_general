@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../../config/db');
 const { verifierToken, verifierRole } = require('../../middleware/auth');
+const logAction = require('../../utils/logger');
 
 router.use(verifierToken);
 router.use(verifierRole('admin'));
 
-// 📊 GET /api/admin/stock - Liste du stock actuel (toutes variations avec produit)
+// GET /api/admin/stock - Liste du stock actuel (toutes variations avec produit)
 router.get('/', async (req, res) => {
   try {
     const query = `
@@ -34,7 +35,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// 🔴 GET /api/admin/stock/faible - Produits sous le seuil
+//  GET /api/admin/stock/faible - Produits sous le seuil
 router.get('/faible', async (req, res) => {
   try {
     const query = `
@@ -62,7 +63,7 @@ router.get('/faible', async (req, res) => {
   }
 });
 
-// 🔍 GET /api/admin/stock/produit/:id - Stock d'un produit avec variations
+// GET /api/admin/stock/produit/:id - Stock d'un produit avec variations
 router.get('/produit/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -89,7 +90,7 @@ router.get('/produit/:id', async (req, res) => {
   }
 });
 
-// 📥 POST /api/admin/stock/entree - Entrée de stock
+// POST /api/admin/stock/entree - Entrée de stock
 router.post('/entree', async (req, res) => {
   const { variation_id, quantite, raison } = req.body;
   if (!variation_id || !quantite || quantite <= 0) {
@@ -129,9 +130,10 @@ router.post('/entree', async (req, res) => {
   } finally {
     client.release();
   }
+    logAction(req.utilisateur.id, 'Entrée stock', `Une entrée de ${quantite} a été enregistrée pour la variation d'ID ${variation_id}.`);
 });
 
-// 🔧 POST /api/admin/stock/ajustement - Ajustement manuel (+/-)
+// POST /api/admin/stock/ajustement - Ajustement manuel (+/-)
 router.post('/ajustement', async (req, res) => {
   const { variation_id, nouveau_stock, raison } = req.body;
   if (!variation_id || nouveau_stock === undefined || nouveau_stock < 0) {
@@ -170,9 +172,10 @@ router.post('/ajustement', async (req, res) => {
   } finally {
     client.release();
   }
+    logAction(req.utilisateur.id, 'Ajustement stock', `Un ajustement de ${nouveau_stock} a été enregistré pour la variation d'ID ${variation_id}.`);
 });
 
-// 📜 GET /api/admin/stock/historique - Historique des mouvements
+// GET /api/admin/stock/historique - Historique des mouvements
 router.get('/historique', async (req, res) => {
   const { produit_id, variation_id, type, page = 1, limite = 50 } = req.query;
   const offset = (page - 1) * limite;

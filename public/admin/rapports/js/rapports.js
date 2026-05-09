@@ -1,8 +1,19 @@
 let charts = {};
+window.addEventListener('beforeinput', () => {
+    for (let key in charts) {
+        if (charts[key] && charts[key].resize) {
+            charts[key].resize();
+        }
+    }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btnAppliquer').addEventListener('click', chargerTout);
   chargerTout();
+});
+
+document.getElementById('btnImprimer').addEventListener('click', () => {
+    window.print();
 });
 
 async function chargerTout() {
@@ -125,3 +136,4 @@ async function chargerRepPaiement(dd, df) {
     }
   });
 }
+

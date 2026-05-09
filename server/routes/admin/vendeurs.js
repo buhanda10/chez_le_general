@@ -5,6 +5,7 @@ const multer = require('multer');
 const path = require('path');
 const pool = require('../../config/db');
 const { verifierToken, verifierRole } = require('../../middleware/auth');
+const logAction = require('../../utils/logger');
 
 router.use(verifierToken);
 router.use(verifierRole('admin'));
@@ -29,7 +30,7 @@ const upload = multer({
   }
 });
 
-// 📋 Liste des vendeurs (avec email)
+//  Liste des vendeurs (avec email)
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query(
@@ -44,7 +45,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// 🔍 Détail d'un vendeur (tous les champs)
+// Détail d'un vendeur (tous les champs)
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -63,7 +64,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// ➕ Création (inchangé, mais on peut ajouter email/adresse/photo plus tard)
+//  Création (inchangé, mais on peut ajouter email/adresse/photo plus tard)
 router.post('/', async (req, res) => {
   const { nom_utilisateur, mot_de_passe, nom_complet, telephone } = req.body;
   if (!nom_utilisateur || !mot_de_passe) {
@@ -86,9 +87,10 @@ router.post('/', async (req, res) => {
     console.error(err);
     res.status(500).json({ message: 'Erreur serveur.' });
   }
+  logAction(req.utilisateur.id, 'Création vendeur', `Le vendeur ${nom_utilisateur} a été créé.`);
 });
 
-// ✏️ Modification (ajout des champs adresse, email, photo)
+//  Modification (ajout des champs adresse, email, photo)
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { nom_utilisateur, mot_de_passe, nom_complet, telephone, email, adresse, actif } = req.body;
@@ -126,9 +128,10 @@ router.put('/:id', async (req, res) => {
     }
     res.status(500).json({ message: 'Erreur serveur.' });
   }
+  logAction(req.utilisateur.id, 'Modification vendeur', `Le vendeur ${nom_utilisateur} a été modifié.`);
 });
 
-// 📸 Upload photo de profil
+//  Upload photo de profil
 router.put('/:id/photo', upload.single('photo'), async (req, res) => {
   const { id } = req.params;
   try {
@@ -148,7 +151,7 @@ router.put('/:id/photo', upload.single('photo'), async (req, res) => {
   }
 });
 
-// ❌ Désactiver (soft delete)
+//  Désactiver (soft delete)
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -164,6 +167,7 @@ router.delete('/:id', async (req, res) => {
     console.error(err);
     res.status(500).json({ message: 'Erreur serveur.' });
   }
+  logAction(req.utilisateur.id, 'Désactivation vendeur', `Le vendeur d'ID ${id} a été désactivé.`);
 });
 
 module.exports = router;

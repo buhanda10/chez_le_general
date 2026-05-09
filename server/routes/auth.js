@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const pool = require('../config/db');
 const { verifierToken } = require('../middleware/auth');
+const logAction = require('../utils/logger');
 
 // POST /api/auth/login
 router.post('/login', async (req, res) => {
@@ -36,6 +37,9 @@ router.post('/login', async (req, res) => {
 
     // Mise à jour dernière connexion
     await pool.query('UPDATE utilisateurs SET derniere_connexion = now() WHERE id = $1', [user.id]);
+
+    // Log de connexion
+    logAction(user.id, 'Connexion', `L'utilisateur ${user.nom_utilisateur} (${user.role}) s'est connecté.`);
 
     // Génération token
     const token = jwt.sign(

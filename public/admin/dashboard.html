@@ -5,24 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Admin</title>
   <link rel="stylesheet" href="css/dashboard.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
   <div class="layout">
     <!-- Sidebar -->
     <nav class="sidebar">
       <div class="sidebar-header">
-        <h2>Admin</h2>
+        <h2>🛍️ Admin</h2>
       </div>
       <ul class="sidebar-menu">
-        <li><a href="dashboard.html" class="active"> Tableau de bord</a></li>
-        <li><a href="produits/categories/index.html">Catégories</a></li>
-        <li><a href="produits/produits/index.html">Produits</a></li>
-        <li><a href="stock/index.html">Stock</a></li>
-        <li><a href="../admin/ventes/index.html">Ventes</a></li>
-        <li><a href="vendeurs/index.html"> Vendeurs</a></li>
-        <li><a href="../admin/clients/index.html"> Clients</a></li>
-        <li><a href="../admin/rapports/index.html">Rapports</a></li>
-        <li><a href="../admin/parametres/index.html">Paramètres</a></li>
+        <li><a href="dashboard.html" class="active">📊 Dashboard</a></li>
+        <li><a href="vendeurs/index.html">👥 Vendeurs</a></li>
+        <li><a href="produits/categories/index.html">🏷️ Catégories</a></li>
+        <li><a href="produits/produits/index.html">📦 Produits</a></li>
+        <li><a href="stock/index.html">📦 Stock</a></li>
+        <li><a href="ventes/index.html">💰 Ventes</a></li>
+        <li><a href="clients/index.html">👤 Clients</a></li>
+        <li><a href="rapports/index.html">📈 Rapports</a></li>
+        <li><a href="parametres/index.html">⚙️ Paramètres</a></li>
+        <li><a href="logs/index.html">📋 Journaux</a></li>
       </ul>
     </nav>
 
@@ -36,7 +39,37 @@
         </div>
       </header>
       <main class="content">
-        <p>Bienvenue sur le tableau de bord administrateur. Utilisez le menu pour naviguer.</p>
+        <!-- Filtre période rapide -->
+        <div class="filtre-periode">
+          <select id="periodeSelect">
+            <option value="7j">7 derniers jours</option>
+            <option value="30j">30 derniers jours</option>
+            <option value="aujourdhui">Aujourd'hui</option>
+            <option value="tout">Tout</option>
+          </select>
+          <button id="btnActualiser" class="btn-link">Actualiser</button>
+        </div>
+
+        <!-- KPI -->
+        <div class="kpi-container" id="kpiContainer">
+          <div class="kpi-box"><div class="kpi-value">...</div><div class="kpi-label">Ventes</div></div>
+          <div class="kpi-box"><div class="kpi-value">...</div><div class="kpi-label">CA brut</div></div>
+          <div class="kpi-box"><div class="kpi-value">...</div><div class="kpi-label">Panier moyen</div></div>
+          <div class="kpi-box"><div class="kpi-value">...</div><div class="kpi-label">Clients actifs</div></div>
+          <div class="kpi-box"><div class="kpi-value">...</div><div class="kpi-label">Stock faible</div></div>
+        </div>
+
+        <!-- Graphiques -->
+        <div class="grid-2col">
+          <div class="card">
+            <h3>Ventes par jour</h3>
+            <canvas id="chartVentesJour" height="200"></canvas>
+          </div>
+          <div class="card">
+            <h3>Top Produits</h3>
+            <canvas id="chartTopProduits" height="200"></canvas>
+          </div>
+        </div>
       </main>
     </div>
   </div>

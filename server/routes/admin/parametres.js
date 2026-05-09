@@ -4,6 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const pool = require('../../config/db');
 const { verifierToken, verifierRole } = require('../../middleware/auth');
+const logAction = require('../../utils/logger');
 
 router.use(verifierToken);
 router.use(verifierRole('admin'));
@@ -60,6 +61,7 @@ router.put('/', async (req, res) => {
         adresse || null
       ]
     );
+    logAction(req.utilisateur.id, 'Modification paramètres', 'Les paramètres de la boutique ont été mis à jour.');
     const result = await pool.query('SELECT * FROM parametres WHERE id = 1');
     res.json(result.rows[0]);
   } catch (err) {
@@ -79,6 +81,7 @@ router.post('/logo', upload.single('logo'), async (req, res) => {
     console.error(err);
     res.status(500).json({ message: 'Erreur serveur.' });
   }
+  logAction(req.utilisateur.id, 'Modification logo', 'Le logo de la boutique a été mis à jour.');
 });
 
 module.exports = router;
