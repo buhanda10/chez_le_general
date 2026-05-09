@@ -41,7 +41,6 @@ input {
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
-  transition: border 0.2s;
 }
 input:focus {
   outline: none;
@@ -56,7 +55,6 @@ button {
   border-radius: 8px;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: background 0.3s;
 }
 button:hover {
   background: #3b5de7;

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Point de vente</title>
+  <link rel="stylesheet" href="css/pos.css">
+</head>
+<body>
+  <div class="layout">
+    <nav class="topbar">
+      <h1>🛒 Point de vente</h1>
+      <div class="user-info">
+        <span id="userDisplay"></span>
+        <a href="ventes.html">📋 Mes ventes</a>
+        <a href="clients.html">👤 Clients</a>
+        <a href="profil.html">⚙️ Profil</a>
+        <button id="logoutBtn">Déconnexion</button>
+      </div>
+    </nav>
+    <main class="pos-container">
+      <!-- Côté gauche : recherche et produits -->
+      <div class="produits-panel">
+        <div class="recherche">
+          <input type="text" id="searchProduit" placeholder="🔍 Rechercher par nom ou référence...">
+        </div>
+        <div class="liste-produits" id="listeProduits">
+          <!-- Liste des produits (chargée dynamiquement) -->
+        </div>
+      </div>
+      <!-- Côté droit : panier -->
+      <div class="panier-panel">
+        <h2>Panier</h2>
+        <div id="infoClient">
+          <select id="clientSelect"><option value="">Sélectionner un client</option></select>
+          <button id="btnNouveauClient">+ Nouveau client</button>
+          <div id="clientForm" style="display:none;">
+            <input type="text" id="clientNom" placeholder="Nom">
+            <input type="text" id="clientPrenom" placeholder="Prénom">
+            <input type="text" id="clientTelephone" placeholder="Téléphone *" required>
+            <button id="btnCreerClient">Créer</button>
+          </div>
+        </div>
+        <div id="panierItems">
+          <p>Panier vide</p>
+        </div>
+        <div class="panier-resume">
+          <label>Remise (FC)</label>
+          <input type="number" id="remise" value="0" min="0" step="0.01">
+          <div class="total">Total : <span id="totalPanier">0</span> FC</div>
+        </div>
+        <div class="paiement">
+          <select id="modePaiement"></select>
+          <button id="btnValiderVente" class="btn-valider">✅ Valider la vente</button>
+        </div>
+        <p id="messageVente"></p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modale pour choisir variation (taille/couleur) -->
+  <div id="modalVariation" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Choisir la variation</h3>
+      <div class="input-group">
+        <label>Taille</label>
+        <select id="varTaille"></select>
+      </div>
+      <div class="input-group">
+        <label>Couleur</label>
+        <select id="varCouleur"></select>
+      </div>
+      <div class="input-group">
+        <label>Quantité</label>
+        <input type="number" id="varQuantite" min="1" value="1">
+      </div>
+      <p id="varStockInfo"></p>
+      <button id="btnAjouterAuPanier">Ajouter au panier</button>
+    </div>
+  </div>
+
+  <script src="../../shared/js/api.js"></script>
+  <script src="js/pos.js"></script>
+</body>
+</html>

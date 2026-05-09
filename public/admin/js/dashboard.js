@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const utilisateur = JSON.parse(localStorage.getItem('utilisateur'));
 
   if (!token || !utilisateur) {
-    window.location.href = 'login.html';
+    window.location.href = '/index.html';
     return;
   }
 
@@ -22,13 +22,13 @@ document.addEventListener('DOMContentLoaded', function() {
   })
   .catch(() => {
     localStorage.clear();
-    window.location.href = 'login.html';
+    window.location.href = '/index.html';
   });
 
   // Bouton déconnexion
   document.getElementById('logoutBtn').addEventListener('click', function() {
     localStorage.clear();
-    window.location.href = 'login.html';
+    window.location.href = '/index.html';
   });
 
   // Chargement initial du dashboard

@@ -35,6 +35,11 @@ app.use('/api/admin/rapports', rapportsRoutes);
 app.use('/api/admin/parametres', require('./routes/admin/parametres'));
 app.use('/api/admin/logs', logsRoutes);
 app.use('/api/admin/utilisateurs', require('./routes/admin/utilisateurs'));
+app.use('/api/vendeur/produits', require('./routes/vendeur/produits'));
+app.use('/api/vendeur/clients', require('./routes/vendeur/clients'));
+app.use('/api/vendeur/ventes', require('./routes/vendeur/ventes'));
+app.use('/api/vendeur/modes-paiement', require('./routes/vendeur/modes_paiement'));
+
 
 // Redirection racine → login admin
 app.get('/', (req, res) => {

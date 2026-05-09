@@ -1,3 +1,21 @@
+// Vérifier si déjà connecté → rediriger directement
+(function() {
+  const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('utilisateur'));
+  if (token && user) {
+    // Vérifier validité token avec une requête rapide
+    fetch('/api/auth/profil', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    }).then(res => {
+      if (res.ok) {
+        redirectByRole(user.role);
+      } else {
+        localStorage.clear();
+      }
+    });
+  }
+})();
+
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
 
@@ -23,20 +41,23 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
       throw new Error(data.message || 'Erreur de connexion');
     }
 
-    // Stocker le token et les infos utilisateur
+    // Stocker
     localStorage.setItem('token', data.token);
     localStorage.setItem('utilisateur', JSON.stringify(data.utilisateur));
 
-    // Vérifier qu'il s'agit bien d'un admin
-    if (data.utilisateur.role !== 'admin') {
-      messageEl.textContent = 'Vous n\'êtes pas administrateur.';
-      localStorage.clear();
-      return;
-    }
-
-    // Redirection vers le dashboard
-    window.location.href = 'dashboard.html';
+    // Redirection selon le rôle
+    redirectByRole(data.utilisateur.role);
   } catch (err) {
     messageEl.textContent = err.message;
   }
 });
+
+function redirectByRole(role) {
+  if (role === 'admin') {
+    window.location.href = 'admin/dashboard.html';
+  } else if (role === 'vendeur') {
+    window.location.href = 'vendeur/pos.html';
+  } else {
+    document.getElementById('message').textContent = 'Rôle inconnu.';
+  }
+}
