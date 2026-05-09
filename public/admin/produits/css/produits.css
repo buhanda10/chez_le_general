@@ -48,3 +48,13 @@ tr:hover td { background: #f8f9ff; }
 .input-group { margin-bottom: 1rem; }
 .input-group label { display: block; margin-bottom: 0.25rem; font-weight: 500; }
 .input-group input, .input-group textarea { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 6px; }
+
+.btn-danger {
+  background: #e94560;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-danger:hover { background: #d1334f; }
