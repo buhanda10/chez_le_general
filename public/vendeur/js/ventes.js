@@ -32,10 +32,11 @@ function afficherVentes(data) {
     <tr>
       <td>${v.reference_vente}</td>
       <td>${new Date(v.created_at).toLocaleString()}</td>
-      <td>${v.montant_total} FCFA</td>
-      <td>${v.remise} FCFA</td>
+      <td>${v.montant_total} FC</td>
+      <td>${v.remise} FC</td>
       <td>${v.client_nom || ''} ${v.client_prenom || ''}</td>
       <td>${v.mode_paiement || '-'}</td>
+      <td><a href="ticket.html?id=${v.id}" class="btn-link" target="_blank">Ticket</a></td>
     </tr>
   `).join('');
 

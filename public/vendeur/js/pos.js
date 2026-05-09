@@ -1,13 +1,9 @@
-// ========== VÉRIFICATION SESSION ==========
+// Vérification session
 const token = localStorage.getItem('token');
 const user = JSON.parse(localStorage.getItem('utilisateur'));
 if (!token || !user || user.role !== 'vendeur') {
   window.location.href = '../index.html';
 }
-const clientSel = document.getElementById('clientSelect');
-const modePaiementSel = document.getElementById('modePaiement');
-const panierContainer = document.getElementById('panierItems');
-const totalSpan = document.getElementById('totalPanier');
 
 document.getElementById('userDisplay').textContent = `👤 ${user.nom_complet || user.nom_utilisateur}`;
 document.getElementById('logoutBtn').addEventListener('click', () => {
@@ -15,31 +11,40 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
   window.location.href = '../index.html';
 });
 
-// ========== VARIABLES GLOBALES ==========
+// RÉFÉRENCES DOM
+const clientSel = document.getElementById('clientSelect');
+const modePaiementSel = document.getElementById('modePaiement');
+const panierContainer = document.getElementById('panierItems');
+const totalSpan = document.getElementById('totalPanier');
+const searchInput = document.getElementById('searchProduit');
+const remiseInput = document.getElementById('remise');
+const listeProduitsDiv = document.getElementById('listeProduits');
+
+// Variables globales
 let produits = [];
 let panier = [];
 let clients = [];
 let modesPaiement = [];
-let selectedClientId = null;
+let produitSelectionne = null;
 
-// ========== INITIALISATION ==========
+// Initialisation
 document.addEventListener('DOMContentLoaded', async () => {
   await chargerProduits();
   await chargerClientsSelect();
   await chargerModesPaiement();
 
-  document.getElementById('searchProduit').addEventListener('input', filtrerProduits);
+  searchInput.addEventListener('input', filtrerProduits);
   document.getElementById('btnNouveauClient').addEventListener('click', afficherFormClient);
   document.getElementById('btnCreerClient').addEventListener('click', creerClientRapide);
   document.getElementById('btnValiderVente').addEventListener('click', validerVente);
-  document.getElementById('remise').addEventListener('input', calculerTotal);
+  remiseInput.addEventListener('input', calculerTotal);
 
   // Modale
   document.querySelector('.close').addEventListener('click', fermerModalVariation);
   document.getElementById('btnAjouterAuPanier').addEventListener('click', ajouterAuPanier);
 });
 
-// ========== CHARGEMENTS API ==========
+// Chargements API
 async function chargerProduits() {
   try {
     const res = await fetch('/api/vendeur/produits', {
@@ -58,7 +63,10 @@ async function chargerClientsSelect() {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     clients = await res.json();
-    remplirSelect(clientSel, clients.map(c => ({ value: c.id, text: `${c.nom || ''} ${c.prenom || ''} - ${c.telephone}` })), '');
+    remplirSelect(clientSel, clients.map(c => ({
+      value: c.id,
+      text: `${c.nom || ''} ${c.prenom || ''} - ${c.telephone}`
+    })), 'Sélectionner un client');
   } catch (err) {
     console.error(err);
   }
@@ -70,75 +78,67 @@ async function chargerModesPaiement() {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     modesPaiement = await res.json();
-    const sel = document.getElementById('modePaiement');
-    sel.innerHTML = modesPaiement.map(m => `<option value="${m.id}">${m.libelle}</option>`).join('');
+    modePaiementSel.innerHTML = modesPaiement.map(m => `<option value="${m.id}">${m.libelle}</option>`).join('');
   } catch (err) {
     console.error(err);
   }
 }
 
-function remplirSelect(sel, options, placeholder) {
-  sel.innerHTML = `<option value="">${placeholder}</option>` + options.map(o => `<option value="${o.value}">${o.text}</option>`).join('');
+function remplirSelect(selectEl, options, placeholder) {
+  selectEl.innerHTML = `<option value="">${placeholder}</option>` + options.map(o => `<option value="${o.value}">${o.text}</option>`).join('');
 }
 
-// ========== PRODUITS ==========
+// Produits
 function afficherProduits(liste) {
-  const container = document.getElementById('listeProduits');
-  container.innerHTML = liste.map(p => {
+  listeProduitsDiv.innerHTML = liste.map(p => {
     let stockTotal = p.variations ? p.variations.reduce((sum, v) => sum + v.stock, 0) : 0;
     return `
       <div class="produit-card" data-id="${p.id}" data-nom="${p.nom}" data-prix="${p.prix_vente}" data-stock="${stockTotal}">
         ${p.image_principale ? `<img src="${p.image_principale}" alt="${p.nom}">` : '<div style="height:120px;background:#eee;"></div>'}
         <h3>${p.nom}</h3>
-        <div class="prix">${p.prix_vente} FC</div>
+        <div class="prix">${p.prix_vente} FCFA</div>
         <div class="stock">Stock: ${stockTotal}</div>
       </div>
     `;
   }).join('');
   document.querySelectorAll('.produit-card').forEach(card => {
-    card.addEventListener('click', () => ouvrirModalVariation(card.dataset.id, card.dataset.nom, card.dataset.prix));
+    card.addEventListener('click', () => ouvrirModalVariation(card.dataset.id));
   });
 }
 
 function filtrerProduits() {
-  const query = document.getElementById('searchProduit').value.toLowerCase();
+  const query = searchInput.value.toLowerCase();
   const filtered = produits.filter(p => p.nom.toLowerCase().includes(query) || p.reference.toLowerCase().includes(query));
   afficherProduits(filtered);
 }
 
-// ========== MODALE VARIATION ==========
-let produitSelectionne = null;
-
-async function ouvrirModalVariation(id, nom, prix) {
+// Modale variation
+async function ouvrirModalVariation(id) {
   const produit = produits.find(p => p.id == id);
   if (!produit) return;
-
   produitSelectionne = produit;
 
-  const modal = document.getElementById('modalVariation');
   document.getElementById('varTaille').innerHTML = '';
   document.getElementById('varCouleur').innerHTML = '';
   document.getElementById('varQuantite').value = 1;
   document.getElementById('varStockInfo').textContent = '';
 
   if (produit.variations && produit.variations.length > 0) {
-    // Extraire tailles uniques
     const taillesUniques = [...new Map(produit.variations.map(v => [v.taille_id, { id: v.taille_id, libelle: v.taille }])).values()];
     const couleursUniques = [...new Map(produit.variations.map(v => [v.couleur_id, { id: v.couleur_id, libelle: v.couleur }])).values()];
 
     remplirSelect(document.getElementById('varTaille'), taillesUniques.map(t => ({ value: t.id, text: t.libelle })), 'Taille');
     remplirSelect(document.getElementById('varCouleur'), couleursUniques.map(c => ({ value: c.id, text: c.libelle })), 'Couleur');
 
-    document.getElementById('varTaille').onchange = () => updateStockInfo();
-    document.getElementById('varCouleur').onchange = () => updateStockInfo();
+    document.getElementById('varTaille').onchange = updateStockInfo;
+    document.getElementById('varCouleur').onchange = updateStockInfo;
     updateStockInfo();
   } else {
-    // Pas de variations, on peut ajouter directement
     document.getElementById('varTaille').innerHTML = '<option value="">-</option>';
     document.getElementById('varCouleur').innerHTML = '<option value="">-</option>';
   }
 
-  modal.style.display = 'flex';
+  document.getElementById('modalVariation').style.display = 'flex';
 }
 
 function updateStockInfo() {
@@ -158,23 +158,18 @@ function ajouterAuPanier() {
   const tailleId = document.getElementById('varTaille').value;
   const couleurId = document.getElementById('varCouleur').value;
   const quantite = parseInt(document.getElementById('varQuantite').value) || 1;
-
   if (!produitSelectionne) return;
 
   let variation = null;
   if (produitSelectionne.variations && produitSelectionne.variations.length > 0) {
+    if (!tailleId || !couleurId) return alert('Veuillez sélectionner une taille et une couleur.');
     variation = produitSelectionne.variations.find(v => v.taille_id == tailleId && v.couleur_id == couleurId);
-    if (!variation) return alert('Veuillez sélectionner une taille et une couleur valides.');
+    if (!variation) return alert('Variation introuvable.');
+    if (variation.stock < quantite) return alert(`Stock insuffisant (${variation.stock} disponibles).`);
   }
 
   const prixVente = variation && variation.prix_vente ? variation.prix_vente : produitSelectionne.prix_vente;
-
-  // Vérifier stock
-  if (variation && variation.stock < quantite) {
-    return alert(`Stock insuffisant (${variation.stock} disponibles).`);
-  }
-
-  const ligne = {
+  panier.push({
     produit_id: produitSelectionne.id,
     nom: produitSelectionne.nom,
     variation_id: variation ? variation.id : null,
@@ -182,20 +177,18 @@ function ajouterAuPanier() {
     couleur: variation ? variation.couleur : null,
     quantite,
     prix_unitaire: prixVente
-  };
+  });
 
-  panier.push(ligne);
   fermerModalVariation();
   afficherPanier();
 }
 
-// ========== PANIER ==========
+// Panier
 function afficherPanier() {
-  const container = document.getElementById('panierItems');
   if (panier.length === 0) {
-    container.innerHTML = '<p>Panier vide</p>';
+    panierContainer.innerHTML = '<p>Panier vide</p>';
   } else {
-    container.innerHTML = panier.map((item, index) => `
+    panierContainer.innerHTML = panier.map((item, index) => `
       <div class="panier-item">
         <div>
           <div class="item-nom">${item.nom} ${item.taille ? '('+item.taille+(item.couleur?' '+item.couleur:'')+')' : ''}</div>
@@ -216,12 +209,12 @@ function supprimerDuPanier(index) {
 
 function calculerTotal() {
   let total = panier.reduce((sum, item) => sum + (item.quantite * item.prix_unitaire), 0);
-  const remise = parseFloat(document.getElementById('remise').value) || 0;
+  const remise = parseFloat(remiseInput.value) || 0;
   const totalFinal = Math.max(total - remise, 0);
-  document.getElementById('totalPanier').textContent = totalFinal.toFixed(2);
+  totalSpan.textContent = totalFinal.toFixed(2);
 }
 
-// ========== CLIENT ==========
+// Client
 function afficherFormClient() {
   document.getElementById('clientForm').style.display = 'block';
 }
@@ -230,7 +223,7 @@ async function creerClientRapide() {
   const nom = document.getElementById('clientNom').value.trim();
   const prenom = document.getElementById('clientPrenom').value.trim();
   const telephone = document.getElementById('clientTelephone').value.trim();
-  if (!telephone) return alert('Le téléphone est requis.');
+  if (!telephone) return alert('Téléphone requis.');
 
   try {
     const res = await fetch('/api/vendeur/clients', {
@@ -242,24 +235,30 @@ async function creerClientRapide() {
       body: JSON.stringify({ nom, prenom, telephone })
     });
     const client = await res.json();
-    if (!res.ok) throw new Error(client.message || 'Erreur');
-    // Ajouter au select et sélectionner
+    if (!res.ok) throw new Error(client.message);
     clients.push(client);
-    const sel = document.getElementById('clientSelect');
-    sel.innerHTML += `<option value="${client.id}" selected>${client.nom || ''} ${client.prenom || ''} - ${client.telephone}</option>`;
-    sel.value = client.id;
+    const opt = document.createElement('option');
+    opt.value = client.id;
+    opt.textContent = `${client.nom || ''} ${client.prenom || ''} - ${client.telephone}`;
+    opt.selected = true;
+    clientSel.appendChild(opt);
+    clientSel.value = client.id;
     document.getElementById('clientForm').style.display = 'none';
+    document.getElementById('clientNom').value = '';
+    document.getElementById('clientPrenom').value = '';
+    document.getElementById('clientTelephone').value = '';
   } catch (err) {
     alert(err.message);
   }
 }
 
-// ========== VALIDATION VENTE ==========
+// Validation vente
 async function validerVente() {
   if (panier.length === 0) return alert('Panier vide.');
-  const clientId = document.getElementById('clientSelect').value || null;
-  const modePaiementId = document.getElementById('modePaiement').value;
-  const remise = parseFloat(document.getElementById('remise').value) || 0;
+  const clientId = clientSel.value || null;
+  const modePaiementId = modePaiementSel.value;
+  if (!modePaiementId) return alert('Sélectionnez un mode de paiement.');
+  const remise = parseFloat(remiseInput.value) || 0;
 
   const data = {
     client_id: clientId ? parseInt(clientId) : null,
@@ -283,14 +282,15 @@ async function validerVente() {
       body: JSON.stringify(data)
     });
     const result = await res.json();
-    if (!res.ok) throw new Error(result.message || 'Erreur validation');
+    if (!res.ok) throw new Error(result.message || 'Erreur');
 
-    // Vider panier et message succès
     panier = [];
     afficherPanier();
+    remiseInput.value = 0;
     document.getElementById('messageVente').textContent = `✅ Vente ${result.reference_vente} enregistrée !`;
-    // Optionnel : impression automatique
-    // window.open(`/api/vendeur/ventes/${result.id}/ticket`, '_blank'); // si on crée une route ticket
+
+    // Ouvrir le ticket
+    window.open(`ticket.html?id=${result.id}`, '_blank', 'width=400,height=600');
   } catch (err) {
     document.getElementById('messageVente').textContent = err.message;
   }
