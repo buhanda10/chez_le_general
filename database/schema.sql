@@ -161,3 +161,10 @@ CREATE TABLE logs_activite (
 );
 
 ALTER TABLE modes_paiement ADD COLUMN IF NOT EXISTS actif BOOLEAN DEFAULT true;
+
+-- Ajout du champ pour marquer une vente annulée
+ALTER TABLE ventes ADD COLUMN IF NOT EXISTS annulee BOOLEAN DEFAULT false;
+-- Optionnel : motif d'annulation
+ALTER TABLE ventes ADD COLUMN IF NOT EXISTS motif_annulation TEXT;
+-- Optionnel : date d'annulation
+ALTER TABLE ventes ADD COLUMN IF NOT EXISTS date_annulation TIMESTAMP;

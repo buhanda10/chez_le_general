@@ -133,4 +133,67 @@ router.get('/:id/ticket-data', async (req, res) => {
   }
 });
 
+// POST /api/vendeur/ventes/:id/annuler
+router.post('/:id/annuler', async (req, res) => {
+  const { id } = req.params;
+  const { motif } = req.body;
+
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    const venteRes = await client.query(
+      'SELECT * FROM ventes WHERE id = $1 AND vendeur_id = $2',
+      [id, req.utilisateur.id]
+    );
+    if (venteRes.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ message: 'Vente introuvable ou non autorisée.' });
+    }
+    const vente = venteRes.rows[0];
+    if (vente.annulee) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ message: 'Cette vente est déjà annulée.' });
+    }
+
+    await client.query(
+      'UPDATE ventes SET annulee = true, motif_annulation = $1, date_annulation = now() WHERE id = $2',
+      [motif || 'Sans motif', id]
+    );
+
+    const lignes = await client.query(
+      'SELECT lv.variation_id, lv.quantite FROM lignes_vente lv WHERE lv.vente_id = $1',
+      [id]
+    );
+
+    for (const ligne of lignes.rows) {
+      if (ligne.variation_id) {
+        await client.query(
+          'UPDATE variations_produit SET stock = stock + $1 WHERE id = $2',
+          [ligne.quantite, ligne.variation_id]
+        );
+        // Mouvement de stock
+        const stockAvantRes = await client.query('SELECT stock FROM variations_produit WHERE id = $1', [ligne.variation_id]);
+        const stockApres = stockAvantRes.rows[0].stock;
+        const stockAvant = stockApres - ligne.quantite;
+        await client.query(
+          `INSERT INTO mouvements_stock (variation_id, type, quantite, stock_avant, stock_apres, raison, utilisateur_id)
+           VALUES ($1, 'entree', $2, $3, $4, $5, $6)`,
+          [ligne.variation_id, ligne.quantite, stockAvant, stockApres, 'Annulation vente ' + vente.reference_vente, req.utilisateur.id]
+        );
+      }
+    }
+
+    await client.query('COMMIT');
+    logAction(req.utilisateur.id, 'Annulation vente', `Vente ${vente.reference_vente} annulée par vendeur. Motif: ${motif || 'Sans motif'}`);
+    res.json({ message: 'Vente annulée avec succès.' });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error(err);
+    res.status(500).json({ message: 'Erreur lors de l\'annulation.' });
+  } finally {
+    client.release();
+  }
+});
+
 module.exports = router;

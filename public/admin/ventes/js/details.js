@@ -18,6 +18,7 @@ function afficherDetail(v) {
     <div class="detail-container">
       <div class="detail-row"><div class="detail-label">Référence :</div><div>${v.reference_vente}</div></div>
       <div class="detail-row"><div class="detail-label">Date :</div><div>${new Date(v.created_at).toLocaleString()}</div></div>
+      <div class="detail-row"><div class="detail-label">Statut :</div><div>${v.annulee ? 'Annulée' : 'Active'}</div></div>
       <div class="detail-row"><div class="detail-label">Vendeur :</div><div>${v.vendeur_nom || '-'}</div></div>
       <div class="detail-row"><div class="detail-label">Client :</div><div>${v.client_nom || ''} ${v.client_prenom || ''} (${v.client_telephone || ''})</div></div>
       <div class="detail-row"><div class="detail-label">Adresse client :</div><div>${v.client_adresse || '-'}</div></div>

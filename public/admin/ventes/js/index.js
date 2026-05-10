@@ -64,6 +64,23 @@ async function chargerVentes() {
   afficherVentes(data);
 }
 
+async function annulerVente(id) {
+  const motif = prompt('Motif de l\'annulation :');
+  if (motif === null) return; // annulé par l'utilisateur
+  try {
+    const res = await apiFetch(`/api/admin/ventes/${id}/annuler`, {
+      method: 'POST',
+      body: JSON.stringify({ motif: motif || '' })
+    });
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.message);
+    alert('✅ Vente annulée');
+    chargerVentes(); // recharger la page
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
 function afficherVentes(data) {
   const tbody = document.getElementById('ventesBody');
   tbody.innerHTML = data.ventes.map(v => `
@@ -75,7 +92,9 @@ function afficherVentes(data) {
       <td>${v.vendeur_nom || '-'}</td>
       <td>${v.client_nom || ''} ${v.client_prenom || ''}</td>
       <td>${v.mode_paiement || '-'}</td>
-      <td><a href="details.html?id=${v.id}" class="btn-link">Détails</a></td>
+      <td><a href="details.html?id=${v.id}" class="btn-link">Détails</a>
+        ${!v.annulee ? `<button onclick="annulerVente(${v.id})" class="btn btn-link">Annuler</button>` : '<span style="color:red;>Annulée</span>'}
+      </td>
     </tr>
   `).join('');
 

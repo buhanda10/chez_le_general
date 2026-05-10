@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../../config/db');
 const { verifierToken, verifierRole } = require('../../middleware/auth');
+const logAction = require('../../utils/logger');
 
 router.use(verifierToken);
 router.use(verifierRole('admin'));
 
-// 📋 GET /api/admin/ventes - Liste des ventes avec filtres et pagination
+//  GET /api/admin/ventes - Liste des ventes avec filtres et pagination
 router.get('/', async (req, res) => {
   try {
     const { page = 1, limite = 25, date_debut, date_fin, vendeur_id, client_id, mode_paiement_id, recherche } = req.query;
@@ -85,7 +86,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// 🔍 GET /api/admin/ventes/:id - Détail d'une vente (avec lignes)
+//  GET /api/admin/ventes/:id - Détail d'une vente (avec lignes)
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -124,7 +125,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// 📤 GET /api/admin/ventes/export/csv - Export CSV
+//  GET /api/admin/ventes/export/csv - Export CSV
 router.get('/export/csv', async (req, res) => {
   const { date_debut, date_fin, vendeur_id } = req.query;
   let where = [];
@@ -164,6 +165,71 @@ router.get('/export/csv', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Erreur export.' });
+  }
+});
+
+// POST /api/admin/ventes/:id/annuler
+router.post('/:id/annuler', async (req, res) => {
+  const { id } = req.params;
+  const { motif } = req.body;
+
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Récupérer la vente
+    const venteRes = await client.query('SELECT * FROM ventes WHERE id = $1', [id]);
+    if (venteRes.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ message: 'Vente introuvable.' });
+    }
+    const vente = venteRes.rows[0];
+    if (vente.annulee) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ message: 'Cette vente est déjà annulée.' });
+    }
+
+    // Marquer comme annulée
+    await client.query(
+      'UPDATE ventes SET annulee = true, motif_annulation = $1, date_annulation = now() WHERE id = $2',
+      [motif || 'Sans motif', id]
+    );
+
+    // Récupérer les lignes de vente
+    const lignes = await client.query(
+      'SELECT lv.variation_id, lv.quantite FROM lignes_vente lv WHERE lv.vente_id = $1',
+      [id]
+    );
+
+    // Réintégrer le stock pour chaque variation
+    for (const ligne of lignes.rows) {
+      if (ligne.variation_id) {
+        await client.query(
+          'UPDATE variations_produit SET stock = stock + $1 WHERE id = $2',
+          [ligne.quantite, ligne.variation_id]
+        );
+        // Enregistrer un mouvement de stock (entrée par annulation)
+        const stockAvantRes = await client.query('SELECT stock FROM variations_produit WHERE id = $1', [ligne.variation_id]);
+        const stockApres = stockAvantRes.rows[0].stock;
+        const stockAvant = stockApres - ligne.quantite;
+        await client.query(
+          `INSERT INTO mouvements_stock (variation_id, type, quantite, stock_avant, stock_apres, raison, utilisateur_id)
+           VALUES ($1, 'entree', $2, $3, $4, $5, $6)`,
+          [ligne.variation_id, ligne.quantite, stockAvant, stockApres, 'Annulation vente ' + vente.reference_vente, req.utilisateur.id]
+        );
+      }
+    }
+
+    await client.query('COMMIT');
+
+    logAction(req.utilisateur.id, 'Annulation vente', `Vente ${vente.reference_vente} annulée. Motif: ${motif || 'Sans motif'}`);
+    res.json({ message: 'Vente annulée avec succès.' });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error(err);
+    res.status(500).json({ message: 'Erreur lors de l\'annulation.' });
+  } finally {
+    client.release();
   }
 });
 

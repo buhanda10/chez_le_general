@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const pool = require('../../config/db');
 const { verifierToken, verifierRole } = require('../../middleware/auth');
-const { logAction } = require('../../utils/logger');
+const logAction = require('../../utils/logger');
 
 router.use(verifierToken);
 router.use(verifierRole('admin'));

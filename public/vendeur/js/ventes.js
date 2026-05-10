@@ -26,6 +26,28 @@ async function chargerVentes(p) {
   }
 }
 
+async function annulerVente(id) {
+  const motif = prompt('Motif de l\'annulation :');
+  if (motif === null) return;
+  try {
+    const res = await fetch(`/api/vendeur/ventes/${id}/annuler`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+      body: JSON.stringify({ motif: motif || '' })
+    });
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.message);
+    alert('✅ Vente annulée');
+    chargerVentes(page); // recharger
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+
 function afficherVentes(data) {
   const tbody = document.getElementById('ventesBody');
   tbody.innerHTML = data.ventes.map(v => `
@@ -36,7 +58,11 @@ function afficherVentes(data) {
       <td>${v.remise} FC</td>
       <td>${v.client_nom || ''} ${v.client_prenom || ''}</td>
       <td>${v.mode_paiement || '-'}</td>
-      <td><a href="ticket.html?id=${v.id}" class="btn-link" target="_blank">Ticket</a></td>
+      <td>
+        <a href="ticket.html?id=${v.id}" target="_blank" class="btn-link">Ticket</a>
+        ${!v.annulee ? `<button onclick="annulerVente(${v.id})" class="btn-link" style="background:#e94560;">Annuler</button>` : '<span style="color:red;">Annulée</span>'}
+      </td>
+
     </tr>
   `).join('');
 
