@@ -63,12 +63,7 @@
 </head>
 <body>
   <div class="layout">
-    <nav class="sidebar">
-      <div class="sidebar-header"><h2>🛍️ Admin</h2></div>
-      <ul class="sidebar-menu">
-        <li><a href="../dashboard.html">📊 Tableau de bord</a></li>
-        <li><a href="index.html" class="active">👥 Vendeurs</a></li>
-      </ul>
+    <nav class="sidebar" id="sidebar-container">
     </nav>
     <div class="main-wrapper">
       <header class="topbar">
@@ -84,6 +79,7 @@
     </div>
   </div>
   <script src="../../shared/js/api.js"></script>
+  <script src="../../admin/js/sidebar.js"></script>
   <script>
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
@@ -147,13 +143,13 @@
               <span>${new Date(v.created_at).toLocaleString()}</span>
             </div>
             <div class="button-group no-print">
-              <button id="btnSauvegarder">💾 Enregistrer les modifications</button>
+              <button id="btnSauvegarder"> Enregistrer les modifications</button>
             </div>
           </div>
           <div class="upload-section no-print">
             <label>Changer la photo :</label>
             <input type="file" id="photoInput" accept="image/*">
-            <button id="btnUpload">📤 Uploader</button>
+            <button id="btnUpload"> Uploader</button>
           </div>
         </div>
       `;
@@ -186,7 +182,7 @@
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message);
-        alert('✅ Modifications enregistrées');
+        alert(' Modifications enregistrées');
         // Mettre à jour l'objet local
         vendeur = data;
       } catch(err) {

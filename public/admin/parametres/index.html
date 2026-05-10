@@ -9,19 +9,7 @@
 </head>
 <body>
   <div class="layout">
-    <nav class="sidebar">
-      <div class="sidebar-header"><h2>Admin</h2></div>
-      <ul class="sidebar-menu">
-        <li><a href="../../admin/dashboard.html"> Dashboard</a></li>
-        <li><a href="../../admin/vendeurs/index.html">Vendeurs</a></li>
-        <li><a href="../../admin/produits/categories/index.html"> Catégories</a></li>
-        <li><a href="../../admin/produits/produits/index.html"> Produits</a></li>
-        <li><a href="../../admin/stock/index.html">Stock</a></li>
-        <li><a href="../../admin/ventes/index.html"> Ventes</a></li>
-        <li><a href="../../admin/clients/index.html">Clients</a></li>
-        <li><a href="../../admin/rapports/index.html"> Rapports</a></li>
-        <li><a href="index.html" class="active">Paramètres</a></li>
-      </ul>
+    <nav class="sidebar" id="sidebar-container">
     </nav>
     <div class="main-wrapper">
       <header class="topbar">
@@ -33,7 +21,7 @@
             <div class="logo-section">
               <img id="logoPreview" src="" alt="Logo" style="max-width:200px; max-height:100px;">
               <input type="file" id="logoInput" accept="image/*">
-              <button type="button" id="btnUploadLogo">📤 Changer le logo</button>
+              <button type="button" id="btnUploadLogo">Changer le logo</button>
             </div>
             <div class="input-group">
               <label>Nom de la boutique</label>
@@ -55,7 +43,7 @@
               <label>Adresse</label>
               <textarea id="adresse" rows="3"></textarea>
             </div>
-            <button type="submit">💾 Enregistrer</button>
+            <button type="submit"> Enregistrer</button>
             <p id="message"></p>
           </form>
         </div>
@@ -64,5 +52,6 @@
   </div>
   <script src="../../../shared/js/api.js"></script>
   <script src="js/parametres.js"></script>
+    <script src="../../admin/js/sidebar.js"></script>
 </body>
 </html>

@@ -8,12 +8,17 @@
 </head>
 <body>
   <div class="layout">
-    <nav class="sidebar">
-      <div class="sidebar-header"><h2> Admin</h2></div>
-      <ul class="sidebar-menu">
-        <li><a href="../../admin/dashboard.html">Dashboard</a></li>
-        <li><a href="index.html" class="active"> Clients</a></li>
-      </ul>
+    <nav class="sidebar" id="sidebar-container">
+    </nav>
+    <div class="main-wrapper">
+      <header class="topbar">
+        <h1>Ajouter un client</h1>
+        <a href="index.html" class="btn-link">← Retour</a>
+      </header>
+      <main class="content">
+        <form id="formClient" class="form-container">
+          <div class="input-group"><label>Nom</label><input type="text" id="nom"></div>
+          <div class="input-group"><label>Prénom</label><input type="text" id="prenom"></div>
     </nav>
     <div class="main-wrapper">
       <header class="topbar">
@@ -34,5 +39,6 @@
   </div>
   <script src="../../../shared/js/api.js"></script>
   <script src="js/ajouter.js"></script>
+  <script src="../../admin/js/sidebar.js"></script>
 </body>
 </html>

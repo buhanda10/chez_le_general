@@ -30,18 +30,18 @@ async function seed() {
       );
     `);
 
-    const adminName = 'tegra';
-    const adminPassword = 'tegra123';
+    const adminName = 'chez_general';
+    const adminPassword = 'general123';
     const hashed = await bcrypt.hash(adminPassword, 10);
 
     await pool.query(
       `INSERT INTO utilisateurs (nom_utilisateur, mot_de_passe, nom_complet, role)
        VALUES ($1, $2, $3, $4)
        ON CONFLICT (nom_utilisateur) DO NOTHING`,
-      [adminName, hashed, 'Administrateur Suprême', 'admin']
+      [adminName, hashed, 'Le General', 'admin']
     );
 
-    console.log('✅ Admin créé (nom: tegra, mdp: tegra123)');
+    console.log('✅ Admin créé (nom: chez_general, mdp: general123)');
   } catch (err) {
     console.error('Erreur seed :', err);
   } finally {
